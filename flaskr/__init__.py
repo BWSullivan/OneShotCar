@@ -1,7 +1,7 @@
-"""import os
+import os
 
 from flask import Flask
-
+from flask import render_template
 
 def create_app(test_config=None):
     # create and configure the app
@@ -24,18 +24,28 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    # a simple page that says hello
+    """# a simple page that says hello
     @app.route('/hello')
     def hello():
-        return 'Hello, World!'
+        return 'Hello, World!'"""
 
-    return app"""
+    #front page
+    @app.route('/front_page')
+    def front_page():
+        return render_template('front_page.html')
+
+    #results page
+    @app.route('/results')
+    def results():
+        return render_template('results_page.html')
+
+    return app
 
 
 #our pages: front page, results page, about us, contact page
 #our pages (continued): history, search page, resources page
 
-from flask import Flask
+"""from flask import Flask
 from flask import render_template
 #from datetime import datetime*
 
@@ -44,4 +54,4 @@ app = Flask(__name__)
 @app.route('/')
 def test():
     #current_time = datetime.now().strftime('%H:%M:%S')
-    return render_template('base.html',name='nnnnnn', time=1)
+    return render_template('base.html',name='nnnnnn', time=1)"""
