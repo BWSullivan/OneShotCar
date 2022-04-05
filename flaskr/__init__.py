@@ -37,7 +37,32 @@ def create_app(test_config=None):
     #results page
     @app.route('/results')
     def results():
-        return render_template('results_page.html')
+        return render_template('results_page.html', main_features='tbc', locations='tbc', colors='tbc', safety='tbc', engine='tbc', infotainment='tbc', interior='tbc', comfort='tbc', performance='tbc', safety_features='tbc', interior_features='tbc', comfort_features='tbc', performance_features='tbc')
+
+    #text search page
+    @app.route('/search')
+    def search():
+        return render_template('search.html')
+    
+    #about us page
+    @app.route('/about')
+    def about():
+        return render_template('about.html')
+
+    #history page
+    @app.route('/history')
+    def history():
+        return render_template('history.html')
+
+    #contact us page
+    @app.route('/contact')
+    def contact():
+        return render_template('contact.html')
+
+    #resources page
+    @app.route('/resources')
+    def resources():
+        return render_template('resources.html')
 
     return app
 
