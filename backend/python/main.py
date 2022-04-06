@@ -1,21 +1,20 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
 import requests
-# -- ARGS --
-API_KEY = 'ec8de34a-4d87-44c5-b569-3482f7a12858'
-URL = 'https://api.carnet.ai/v2/mmg/detect?box_offset=0&box_min_width=180&box_min_height=180&box_min_ratio=1&box_max_ratio=3.15&box_select=center&region=NA'
+
+# -- KEYS and URLs --
+API_KEY_carnet = 'ec8de34a-4d87-44c5-b569-3482f7a12858'
+URL_carnet = 'https://api.carnet.ai/v2/mmg/detect?box_offset=0&box_min_width=180&box_min_height=180&box_min_ratio=1&box_max_ratio=3.15&box_select=center&region=NA'
+
+API_KEY_carinfo = 'haOKbNWT5dbmE1SAiFodnUbaMojtX75izMNdChLyulTuo3Ww1reCmA1CqEKR'
+
 IMG_DIR = 'tesla-big.jpg'
 
 # -- Query according to documentation --
-query = {'accept': 'application/json',
-         'api-key': API_KEY,
+query_carnet = {'accept': 'application/json',
+         'api-key': API_KEY_carnet,
          'Content-Type': 'application/octet-stream'}
 
 data = open(IMG_DIR, 'rb').read()
-response = requests.post(URL, headers=query, data=data)
+response = requests.post(URL_carnet, headers=query_carnet, data=data)
 
 try:
     data = response.json()  # parsing json answer
@@ -30,9 +29,23 @@ try:
     years = answer_dict['years']
     print(make_name, model_name, years)
     print(probability)
-    
+
 except requests.exceptions.RequestException:
     print('error')
     print(response.text)
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+
+response = requests.get(url='https://carmakemodeldb.com/api/v1/car-lists/get/models/2022/'+ make_name
+                            + '?api_token=' + API_KEY_carinfo)
+
+data = response.json()  # parsing json answer
+print('Other models available today:')
+for x in data:
+    print(x['model'])
+
+response = requests.get(url='https://carmakemodeldb.com/api/v1/car-lists/get/trims/2022/' + make_name + '/' + model_name + '/'
+                            +'?api_token=' + API_KEY_carinfo)
+data = response.json()  # parsing json answer
+print('Trims available:')
+for x in data:
+    print(x['trim'])
