@@ -59,3 +59,4 @@ def callCarNetAPI(userFilename):
     except requests.exceptions.RequestException:
         print('error')
         print(response.text)
+        return make_name, model_name, years
