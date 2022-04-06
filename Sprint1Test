@@ -1,0 +1,61 @@
+    def getFilename(image):
+        filename = secure_filename(image.filename)
+        user_pic_name = os.path.join(app.config["IMAGE_UPLOADS"], filename)
+        return user_pic_name
+
+    @app.route('/index', methods=["GET", "POST"])
+    def index():
+        if request.method == "POST":
+            if request.files:
+                image = request.files["image"]
+
+                if image.filename == "":
+                    print("Image must have a filename.")
+                    return redirect(request.url)
+
+                if not allowed_image(image.filename):
+                    print("That image extension is not allowed")
+                    return redirect(request.url)
+                else:
+                    filename = getFilename(image)
+                    image.save(filename)
+                    callCarNetAPI(filename)
+                    print("Image saved!")
+
+                return redirect(request.url)
+        return render_template("index.html")
+        
+        
+        
+ 
+        
+def callCarNetAPI(userFilename):
+    API_KEY = 'ec8de34a-4d87-44c5-b569-3482f7a12858'
+    URL = 'https://api.carnet.ai/v2/mmg/detect?box_offset=0&box_min_width=180&box_min_height=180&box_min_ratio=1&box_max_ratio=3.15&box_select=center&region=NA'
+    IMG_DIR = 'tesla-big.jpg'
+
+    # -- Query according to documentation --
+    query = {'accept': 'application/json',
+             'api-key': API_KEY,
+             'Content-Type': 'application/octet-stream'}
+
+    data = open(userFilename, 'rb').read()
+    response = requests.post(URL, headers=query, data=data)
+
+    try:
+        data = response.json()  # parsing json answer
+        detection_dict = data['detections']
+        img_args = detection_dict[0]
+        probability = img_args['class']
+        mmg = img_args['mmg']
+        answer_dict = mmg[0]
+
+        make_name = answer_dict['make_name']
+        model_name = answer_dict['model_name']
+        years = answer_dict['years']
+        print(make_name, model_name, years)
+        print(probability)
+
+    except requests.exceptions.RequestException:
+        print('error')
+        print(response.text)
