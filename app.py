@@ -1,14 +1,15 @@
+from flask import *
+import requests
+import json
 import os
+from werkzeug.utils import secure_filename
 
-from flask import Flask
-from flask import render_template
 
 # This is a sample Python script.
 
 # Press Shift+F10 to execute it or replace it with your code.
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 
-import requests
 # -- ARGS --
 API_KEY = 'ec8de34a-4d87-44c5-b569-3482f7a12858'
 URL = 'https://api.carnet.ai/v2/mmg/detect?box_offset=0&box_min_width=180&box_min_height=180&box_min_ratio=1&box_max_ratio=3.15&box_select=center&region=NA'
@@ -39,6 +40,7 @@ except requests.exceptions.RequestException:
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
 
 
+
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
@@ -60,10 +62,42 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    """# a simple page that says hello
-    @app.route('/hello')
-    def hello():
-        return 'Hello, World!'"""
+    path = os.path.join(app.root_path, "static", "uploads" )
+    app.config["IMAGE_UPLOADS"] = path
+    app.config["ALLOWED_IMAGE_EXTENSIONS"] = ["PNG","JPEG","JPG", "GIF"]
+
+    def allowed_image(filename):
+        if not "." in filename:
+            return False
+
+        ext = filename.rsplit(".", 1)[1]
+
+        if ext.upper() in app.config["ALLOWED_IMAGE_EXTENSIONS"]:
+            return True
+        else:
+            return False
+    
+    #upload image
+    @app.route('/index', methods=["GET", "POST"])
+    def index():
+        if request.method == "POST":
+            if request.files:
+                image = request.files["image"]
+
+                if image.filename == "":
+                    print("Image must have a filename.")
+                    return redirect(request.url)
+
+                if not allowed_image(image.filename):
+                    print("That image extension is not allowed")
+                    return redirect(request.url)
+                else:
+                    filename = secure_filename(image.filename)
+                    image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
+                    print("Image saved!")
+
+                return redirect(request.url)
+        return render_template("index.html")
 
     #front page
     @app.route('/front_page')
