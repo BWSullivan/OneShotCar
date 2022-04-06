@@ -7,65 +7,63 @@
     <link href="/static/dist/output.css" rel="stylesheet" />
 </head>
 <body>
-  <div class="grid grid-cols-3">
+  <div class="flex flex-row font-serif">
     <!-- left column -->
-    <div class="col-start-1 col-end-1.125">
-      <div class="absolute inset-y-0 left-0 my-6 ml-5">
-        <!-- car picture -->
-        <img src="/static/photos/aesthetic_car.jpg" width="150" height="100" alt="corner car">
+    <div class="my-6 ml-5 -mt-[12rem] grow w-1/4">
+        <div class="w-full">
+          <!-- car picture -->
+          <img src="/static/photos/aesthetic_car.jpg" class="object-fill" alt="corner car">
+        </div>
     
         <!-- website motto text -->
-        <div class="bg-slate-200 my-6">
+        <div class="bg-slate-200 my-6 p-3">
           <!-- page contents -->
-          <h1 class=" text-indigo-500 font-extrabold text-left text-2xl gap-y-6">What We Do</h1>
-          <p class="text-left text-lg leading-relaxed gap-y-6">Ever spot the most beautiful car</p>
-          <p class="text-left text-lg leading-relaxed gap-y-6">you've ever seen</p>
-          <p class="text-left text-lg leading-relaxed gap-y-6">but don't know enough</p>
-          <p class="text-left text-lg leading-relaxed gap-y-6">about it to identify it?</p>
-          <p class="text-left text-lg leading-relaxed gap-y-6">Well that's where we come in!</p>
-          <p class="text-left text-lg leading-relaxed gap-y-6">Simply upload an image</p>
-          <p class="text-left text-lg leading-relaxed gap-y-6">of the car you want identified</p>
-          <p class="text-left text-lg leading-relaxed gap-y-6">into the site, and we will</p>
-          <p class="text-left text-lg leading-relaxed gap-y-6">give you the extra details.</p>
+          <h1 class=" text-[#bd672a] font-[1000] text-left text-3xl gap-y-6">What We Do</h1>
+          <p class="text-left text-lg leading-relaxed gap-y-6">Ever spot the most beautiful car you've ever seen 
+          but don't know enough 
+          about it to identify it? 
+          Well that's where we come in! 
+          Simply upload an image 
+          of the car you want identified 
+          into the site, and we will 
+          give you the extra details.</p>
         </div>
   
         <!-- team logo -->
-        <img src="/static/photos/logo.PNG" width="300" height="100" alt="team logo">
-      </div>
+        <img src="/static/photos/logo.PNG" alt="team logo" class="hue-rotate-[140deg] saturate-[.75]">
     </div>
-
+    
     <!-- middle column -->
-    <div class="col-start-1.125 col-end-1.25">
-      <div class="absolute inset-y-0">
+    <div class="ml-3 grow w-1/4">
         <!-- group name acronym -->
         <!-- TODO -->
-        <header class="text-indigo-500 text-9xl text-center my-8 font-extrabold">OC</header>
+        <header class="text-[#bd672a] text-9xl text-center my-8 font-extrabold" style="text-shadow: 1px 1px 2px black">OC</header>
   
         <!-- navigation links -->
         <div class="text-3xl text-center my-6">
-          <div class="text-4xl">
-            <a href="front_page" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-indigo-500 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Home</a>
+          <div class="text-5xl">
+            <a href="front_page" class="hover:uppercase font-bold block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-[#bd672a] md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Home</a>
           </div>
-            <a href="search" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-indigo-500 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Search</a>
+            <a href="search" class="hover:uppercase font-bold block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-[#bd672a] md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Search</a>
           
-            <a href="about" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-indigo-500 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">About Us</a>
+            <a href="about" class="hover:uppercase font-bold block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-[#bd672a] md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">About Us</a>
           
-            <a href="history" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-indigo-500 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">History</a>
+            <a href="history" class="hover:uppercase font-bold block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-[#bd672a] md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">History</a>
           
-            <a href="contact" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-indigo-500 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Contact us</a>
+            <a href="contact" class="hover:uppercase font-bold block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-[#bd672a] md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Contact us</a>
           
-            <a href="resources" class="block py-2 pr-4 pl-3 text-gray-700 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-indigo-500 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Resources</a>
+            <a href="resources" class="hover:uppercase font-bold block py-2 pr-4 pl-3 text-gray-700 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-[#bd672a] md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Resources</a>
   
-            <a href="#" class="block py-2 pr-4 pl-3 text-white bg-indigo-500 rounded md:bg-transparent md:text-indigo-500 md:p-0 dark:text-white" aria-current="page">Text to Speech</a>
+            <a href="#" class="hover:uppercase font-bold block py-2 pr-4 pl-3 text-white bg-[#bd672a] rounded md:bg-transparent md:text-[#bd672a] md:p-0 dark:text-white" aria-current="page">Text to Speech</a>
         </div>
   
         <!-- picture upload area -->
         <h2 class="text-center text-lg">Upload your picture here:</h2>
         <div class='flex items-center justify-center my-3'>
           <!-- picture upload button-->
-          <button class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
+          <a href="results" class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
             Submit
-          </button>
+          </a>
         </div>
         <div class="flex items-center justify-center my-3">
           <!-- text search button -->
@@ -73,24 +71,22 @@
             Text Search
           </a>
         </div>
-      </div>
     </div>
 
     <!-- right column -->
-    <div class="col-start-1.25 col-end-2 border-solid border-2 border-indigo-500 drop-shadow-lg">
-      <div class="absolute nset-y-0 right-0 my-6 mr-5">
-        <h1 class="text-right text-xl font-black">CARS</h1>
-        <div class="grid grid-cols-2 gap-3 mr-10 space-x-3">
-          <div>
-            <img src="/static/photos/car_ride.jpg" width="200" height="100" alt="ltop car" style="margin:50px 0px">
-            <img src="/static/photos/black_car.jpg" width="200" height="100" alt="lbottom car" style="margin:50px 0px">
+    <div class="py-6 ml-[6rem] mr-5 pl-[3rem] grow w-1/2" style="box-shadow: -15px 0 15px -15px rgb(0 0 0 / 0.1)">
+        <h1 class="text-right text-3xl font-black mr-10">CARS</h1>
+        <p class="text-right text-xl font-extrabold mr-10 text-slate-500">SEARCH MAKE MODEL YEAR ... AND MORE !</p>
+        <div class="flex mr-10 space-x-3">
+          <div class="flex flex-col flex-1">
+            <img src="/static/photos/car_ride.jpg" alt="ltop car" class="my-3">
+            <img src="/static/photos/black_car.jpg" alt="lbottom car" class="my-3">
           </div>
-          <div>
-            <img src="/static/photos/car_freeway.jfif" width="200" height="100" alt="rtop car" style="margin:50px 0px">
-            <img src="/static/photos/flying_car.jpg" width="200" height="100" alt="rbottom car" style="margin:50px 0px">
+          <div class="flex flex-col flex-1">
+            <img src="/static/photos/car_freeway.jfif" alt="rtop car" class="my-3">
+            <img src="/static/photos/flying_car.jpg" alt="rbottom car" class="my-3">
           </div>
         </div>
-      </div>
     </div>
   </div>
 </body>
