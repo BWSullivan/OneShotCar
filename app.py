@@ -94,6 +94,7 @@ def create_app(test_config=None):
                 else:
                     filename = secure_filename(image.filename)
                     image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
+                    user_pic = os.path.join(app.config["IMAGE_UPLOADS"], filename)
                     print("Image saved!")
 
                 return redirect(request.url)
