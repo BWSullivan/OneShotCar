@@ -71,6 +71,12 @@ def create_app(test_config=None):
                 return redirect(request.url)
         return render_template("index.html")
         
+
+    #default page
+    @app.route('/')
+    def home():
+        return render_template("front_page.html")
+
     #front page
     @app.route('/front_page')
     def front_page():
