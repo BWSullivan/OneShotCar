@@ -5,6 +5,10 @@ import os
 from werkzeug.utils import secure_filename
 import backend_file
 
+# global variables
+pictureSearch = False
+textSearch = False
+
 def create_app(test_config=None):
     make_name, model_name, years = "", "", ""
     # create and configure the app
@@ -51,6 +55,7 @@ def create_app(test_config=None):
 
     @app.route('/index', methods=["GET", "POST"])
     def index():
+        pictureSearch = True
         if request.method == "POST":
             if request.files:
                 image = request.files["image"]
@@ -65,7 +70,6 @@ def create_app(test_config=None):
                 else:
                     filename = getFilename(image)
                     image.save(filename)
-                    #make_name, model_name, years = main.callAPI(filename)
                     print("Image saved!")
 
                 return redirect(request.url)
@@ -85,13 +89,26 @@ def create_app(test_config=None):
     #results page
     @app.route('/results')
     def results():
-        make, model, year = backend_file.get_user_picture()
+        # if pictureSearch == True:
+        #     make, model, year = backend_file.get_user_picture()
+        # elif textSearch == True:
+        #     # engine, trims, other = backend_file.getformhere
+        #     # make, model , year = get from search.html
         return render_template('results_page.html', make_name=make, model_name=model, years=year, locations='tbc', colors='tbc', safety='tbc', engine='tbc', infotainment='tbc', interior='tbc', comfort='tbc', performance='tbc', safety_features='tbc', interior_features='tbc', comfort_features='tbc', performance_features='tbc')
 
     #text search page
-    @app.route('/search')
+    @app.route('/search', methods = ["POST", "GET"])
     def search():
-        return render_template('search.html')
+        textSearch = True
+        if request.method == "POST":
+            user_input_make = request.form['makeInput']
+            user_input_model = request.form['makeInput']
+            user_input_year = request.form['yearInput']
+            return render_template('results_page.html', make_name=user_input_make, model_name=user_input_model, years=user_input_year, locations='tbc', colors='tbc', safety='tbc', engine='tbc', infotainment='tbc', interior='tbc', comfort='tbc', performance='tbc', safety_features='tbc', interior_features='tbc', comfort_features='tbc', performance_features='tbc')
+        else:
+        # user_input_make, user_input_model, user_input_year = request.args.get('user')
+        # user_input_make = requests.args.get('makeInput')
+            return render_template('search.html')
     
     #about us page
     @app.route('/about')
