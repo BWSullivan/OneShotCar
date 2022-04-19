@@ -2,8 +2,10 @@ import requests
 import random
 
 
+# returns make, model, years_first, years_last
 def carnet_ai():
     # -- Query according to documentation --
+    URL_carnet = 'https://api.carnet.ai/v2/mmg/detect?box_offset=0&box_min_width=180&box_min_height=180&box_min_ratio=1&box_max_ratio=3.15&box_select=center&region=NA'
     query_carnet = {'accept': 'application/json',
                     'api-key': API_KEY_carnet,
                     'Content-Type': 'application/octet-stream'}
@@ -32,13 +34,18 @@ def carnet_ai():
 
         # years comes in from API like this: 1997 - 2018
         years = answer_dict['years']
-        return make_name, model_name, years
+        years_list = years.split('-')
+        years_first = years_list[0]
+        years_last = years_list[1]
+
+        return make_name, model_name, years_first, years_last
 
     except requests.exceptions.RequestException:
         print('error')
         print(response.text)
 
 
+# returns msrp
 def get_google_result(make_name, model_name):
     engine = "google"
     q = make_name + model_name + "MSRP"
@@ -57,6 +64,7 @@ def get_google_result(make_name, model_name):
         return "MSRP not found!"
 
 
+# returns list of other models
 def get_other_models(make_name):  # done
     response_model = requests.get(url='https://carmakemodeldb.com/api/v1/car-lists/get/models/2022/' + make_name
                                       + '?api_token=' + API_KEY_carinfo)
@@ -68,6 +76,7 @@ def get_other_models(make_name):  # done
     return model_list
 
 
+# returns list of trims
 def get_trims(make_name, model_name, years_first):
     response_trim = requests.get(url='https://carmakemodeldb.com/api/v1/car-lists/get/trims/' + years_first + '/'
                                      + make_name + '/' + model_name + '/' + '?api_token=' + API_KEY_carinfo)
@@ -79,6 +88,7 @@ def get_trims(make_name, model_name, years_first):
     return trim_list
 
 
+# returns list of transmissions
 def get_transmissions(make_name, model_name, years_first, list_trims):
     # O(n^2) avg case, this takes forever. Not sure if there is another way
     # might switch data structures to get O(lg n)
@@ -98,8 +108,8 @@ def get_transmissions(make_name, model_name, years_first, list_trims):
     return list_of_trans
 
 
+# returns make, model, year, trims formatted for the car_features function (IGNORE)
 def carstockpile_api(make_stock, model_stock, years_first):
-
     # get list of cars from API
     # my goal here is to get the API to maybe work in the best way possible
     multiple_models = False
@@ -110,11 +120,10 @@ def carstockpile_api(make_stock, model_stock, years_first):
     if years_first in years_banned:
         years_first = '2019'
 
-
     response_stockpile = requests.get(url=URL_stockpile,
                                       params={'make': make_stock},
                                       headers={'X-RapidAPI-Host': 'car-stockpile.p.rapidapi.com',
-                                               'X-RapidAPI-Key' : '0ccc64153emsh2befbe0a2bfcdd1p1ca214jsn646b219efe35'})
+                                               'X-RapidAPI-Key': '0ccc64153emsh2befbe0a2bfcdd1p1ca214jsn646b219efe35'})
     raw_data = response_stockpile.json()
     list_models = (raw_data['models'])
     string_models = []
@@ -131,13 +140,12 @@ def carstockpile_api(make_stock, model_stock, years_first):
     best_model = string_models[0]
     # now have the same models as the model found in carnet API
 
-
     URL_stockpile = 'https://car-stockpile.p.rapidapi.com/trims'
 
     response_stockpile = requests.get(url=URL_stockpile,
                                       params={'make': make, 'model': best_model, 'year': years_first},
                                       headers={'X-RapidAPI-Host': 'car-stockpile.p.rapidapi.com',
-                                               'X-RapidAPI-Key' : '0ccc64153emsh2befbe0a2bfcdd1p1ca214jsn646b219efe35'})
+                                               'X-RapidAPI-Key': '0ccc64153emsh2befbe0a2bfcdd1p1ca214jsn646b219efe35'})
     raw_data = response_stockpile.json()
     list_trims = (raw_data['trims'])
     string_trim = []
@@ -156,6 +164,7 @@ def carstockpile_api(make_stock, model_stock, years_first):
     return make, best_model, years_first, final_trim
 
 
+# returns a list of features depending on option flag
 def car_features(make_stock, best_model, years_first, final_trim, option):
     if option == 1:
         URL_stockpile_tire = 'https://car-stockpile.p.rapidapi.com/spec-chassis-wheel'
@@ -193,22 +202,17 @@ def car_features(make_stock, best_model, years_first, final_trim, option):
         return raw_data
 
 
-
 # -- KEYS and URLs --
+
 API_KEY_carnet = 'ec8de34a-4d87-44c5-b569-3482f7a12858'
-URL_carnet = 'https://api.carnet.ai/v2/mmg/detect?box_offset=0&box_min_width=180&box_min_height=180&box_min_ratio=1&box_max_ratio=3.15&box_select=center&region=NA'
 
 API_KEY_carinfo = 'haOKbNWT5dbmE1SAiFodnUbaMojtX75izMNdChLyulTuo3Ww1reCmA1CqEKR'
-# HERE IS IMG
-IMG_DIR = 'comp.jpg'
 
 API_KEY_google = '4be96181d5e32a353a8cb07555e2d6d85ac7809a90bdbdcbb1ff9cf37ab41968'
 
-API_KEY_ninja = 'nX781Gfb0tmE9iL1U2vFZw==zvSlYp1cdKH8M3qk'
-
 API_KEY_stockpile = '0ccc64153emsh2befbe0a2bfcdd1p1ca214jsn646b219efe35'
 
-API_KEY_carsxe = 'vy7h9rr8c_igmdxi7as_v7krx6teu'
+IMG_DIR = 'comp.jpg'
 
 # make
 # model
@@ -219,17 +223,9 @@ API_KEY_carsxe = 'vy7h9rr8c_igmdxi7as_v7krx6teu'
 # all_trans
 # tire_list
 # feature_list
-# general_spec
+# general_specs
 
-
-make, model, years = carnet_ai()
-print("")
-print(make)
-print(model)
-print(years)
-years_list = years.split('-')
-years_first = years_list[0]
-years_last = years_list[1]
+make, model, years_first, years_last = carnet_ai()
 
 msrp = get_google_result(make, model)
 print(msrp)
@@ -254,5 +250,3 @@ print(feature_list)
 
 general_specs = car_features(new_make, bestmod, caryear, finaltrim, 3)
 print(general_specs)
-
-
