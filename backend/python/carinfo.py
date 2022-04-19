@@ -101,7 +101,7 @@ def get_transmissions(make_name, model_name, years_first, list_trims):
 
         for trans in transmissions:
             try:
-                if trans['transmission'] not in list_of_trans:
+                if (trans['transmission'] not in list_of_trans) and (trans['transmission'] is not None):
                     list_of_trans.append(trans['transmission'])
             except TypeError:
                 print("None found!")
