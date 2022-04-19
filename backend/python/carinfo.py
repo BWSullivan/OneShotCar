@@ -159,16 +159,11 @@ def carstockpile_api(make_stock, model_stock, years_first):
     raw_data = response_stockpile.json()
     list_trims = (raw_data['trims'])
     string_trim = []
-    final_trim = []
+
     for trim in list_trims:
         string_trim.append(trim['trim'])
 
-    if len(string_trim) > 8:
-        for i in range(0, len(string_trim), (len(string_trim) // 4)):
-            final_trim.append(string_trim[i])
-    else:
-        final_trim = string_trim
-
+    final_trim = string_trim[random.randint(0, len(string_trim))]
     print(final_trim)
 
     # URL_stockpile = 'https://car-stockpile.p.rapidapi.com/spec-transmission'
@@ -176,6 +171,37 @@ def carstockpile_api(make_stock, model_stock, years_first):
     # print(response_stockpile.json())
 
     # we can finally make requests!
+
+    # -- TIRE SIZES --
+    URL_stockpile = 'https://car-stockpile.p.rapidapi.com/spec-chassis-wheel'
+
+    response_stockpile = requests.get(url=URL_stockpile,
+                                      params={'make': make_stock, 'model': best_model, 'year': years_first, 'trim': final_trim},
+                                      headers={'X-RapidAPI-Host': 'car-stockpile.p.rapidapi.com',
+                                               'X-RapidAPI-Key': '0ccc64153emsh2befbe0a2bfcdd1p1ca214jsn646b219efe35'})
+    raw_data = response_stockpile.json()
+    print(raw_data)
+
+    # -- FEATURES --
+    URL_stockpile = 'https://car-stockpile.p.rapidapi.com/spec-features'
+
+    response_stockpile = requests.get(url=URL_stockpile,
+                                      params={'make': make_stock, 'model': best_model, 'year': years_first, 'trim': final_trim},
+                                      headers={'X-RapidAPI-Host': 'car-stockpile.p.rapidapi.com',
+                                               'X-RapidAPI-Key': '0ccc64153emsh2befbe0a2bfcdd1p1ca214jsn646b219efe35'})
+    raw_data = response_stockpile.json()
+    print(raw_data)
+
+    # --
+    URL_stockpile = 'https://car-stockpile.p.rapidapi.com/spec-general'
+
+    response_stockpile = requests.get(url=URL_stockpile,
+                                      params={'make': make_stock, 'model': best_model, 'year': years_first, 'trim': final_trim},
+                                      headers={'X-RapidAPI-Host': 'car-stockpile.p.rapidapi.com',
+                                               'X-RapidAPI-Key': '0ccc64153emsh2befbe0a2bfcdd1p1ca214jsn646b219efe35'})
+    raw_data = response_stockpile.json()
+    print(raw_data)
+
 
 
 def carquery_api():
@@ -189,7 +215,7 @@ URL_carnet = 'https://api.carnet.ai/v2/mmg/detect?box_offset=0&box_min_width=180
 
 API_KEY_carinfo = 'haOKbNWT5dbmE1SAiFodnUbaMojtX75izMNdChLyulTuo3Ww1reCmA1CqEKR'
 # HERE IS IMG
-IMG_DIR = 'sedna.jpg'
+IMG_DIR = 'comp.jpg'
 
 API_KEY_google = '4be96181d5e32a353a8cb07555e2d6d85ac7809a90bdbdcbb1ff9cf37ab41968'
 
@@ -198,30 +224,6 @@ API_KEY_ninja = 'nX781Gfb0tmE9iL1U2vFZw==zvSlYp1cdKH8M3qk'
 API_KEY_stockpile = '0ccc64153emsh2befbe0a2bfcdd1p1ca214jsn646b219efe35'
 
 API_KEY_carsxe = 'vy7h9rr8c_igmdxi7as_v7krx6teu'
-
-
-# -- VALUES AFTER RUN --
-# main():
-#   probability: Double, contains probability in percentage of carnetAPI
-#   make_name: String, contains make name
-#   model_name: String, contains model name
-#   years_first: String, contains first model year
-#   year_last: String, contains last model year (might be empty if car generation is still in production)
-
-# get_other_models():
-#   other_models_today: String list, contains other models from selected make in 2022
-
-# get_trims():
-#   trims: String list, contains other trims from selected model
-
-# get_power_train():
-#   power_train: String list, contains different power-trains from selected model
-
-# get_transmission():
-
-# get_google_result():
-#   msrp: string straight from google of MSRP (VERY EXPENSIVE)
-
 
 
 # -- TEST AREA --
@@ -268,5 +270,20 @@ for x in years_list:
 
 
 carstockpile_api(make, model, years_first)
+get_google_result(make, model)
+
+# -- CAR STOCKPILE --
+
+
+
+
+
+
+
+
+
+
+
+
 
 # carquery_api()
