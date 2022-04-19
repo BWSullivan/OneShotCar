@@ -77,6 +77,11 @@ def create_app(test_config=None):
     def home():
         return render_template("front_page.html")
 
+    #automatic page
+    @app.route('/')
+    def home():
+        return render_template("front_page.html")
+
     #front page
     @app.route('/front_page')
     def front_page():
@@ -119,14 +124,3 @@ def create_app(test_config=None):
 
 #our pages: front page, results page, about us, contact page
 #our pages (continued): history, search page, resources page
-
-"""from flask import Flask
-from flask import render_template
-#from datetime import datetime*
-
-app = Flask(__name__)
-
-@app.route('/')
-def test():
-    #current_time = datetime.now().strftime('%H:%M:%S')
-    return render_template('base.html',name='nnnnnn', time=1)"""
