@@ -57,7 +57,7 @@ def get_google_result(make_name, model_name):
         return "MSRP not found!"
 
 
-def get_other_models():  # done
+def get_other_models(make_name):  # done
     response_model = requests.get(url='https://carmakemodeldb.com/api/v1/car-lists/get/models/2022/' + make_name
                                       + '?api_token=' + API_KEY_carinfo)
 
@@ -68,7 +68,7 @@ def get_other_models():  # done
     return model_list
 
 
-def get_trims():
+def get_trims(make_name, model_name, years_first):
     response_trim = requests.get(url='https://carmakemodeldb.com/api/v1/car-lists/get/trims/' + years_first + '/'
                                      + make_name + '/' + model_name + '/' + '?api_token=' + API_KEY_carinfo)
 
@@ -79,7 +79,7 @@ def get_trims():
     return trim_list
 
 
-def get_transmissions(list_trims):
+def get_transmissions(make_name, model_name, years_first, list_trims):
     # O(n^2) avg case, this takes forever. Not sure if there is another way
     # might switch data structures to get O(lg n)
     list_of_trans = []
@@ -96,24 +96,6 @@ def get_transmissions(list_trims):
             except TypeError:
                 print("None found!")
     return list_of_trans
-
-
-def ninja_api():
-    make = 'honda'
-    model = 'civic'
-    year = 2018
-    api_url = 'https://api.api-ninjas.com/v1/cars?make=tesla?year=2012'
-    response = requests.get(api_url, headers={'X-Api-Key': API_KEY_ninja})
-    data = response.json()
-    for x in data:
-        print(x)
-
-
-def shine_api():
-    API_KEY_shine = 'VvmCH4l92hEhgIZfA3LC9KLAsnXkHhm1'
-    consumer_secret = 'PaePrepDBpI5xMMe'
-    response = requests.get(url='https://apis.solarialabs.com/shine/v1/vehicle-stats/specs?make=Honda&model=Civic&year=2016&full-data=True&apikey=' + API_KEY_shine)
-    print(response.text)
 
 
 def carstockpile_api(make_stock, model_stock, years_first):
@@ -171,42 +153,45 @@ def carstockpile_api(make_stock, model_stock, years_first):
     # print(response_stockpile.json())
 
     # we can finally make requests!
+    return make, best_model, years_first, final_trim
 
-    # -- TIRE SIZES --
-    URL_stockpile = 'https://car-stockpile.p.rapidapi.com/spec-chassis-wheel'
 
-    response_stockpile = requests.get(url=URL_stockpile,
-                                      params={'make': make_stock, 'model': best_model, 'year': years_first, 'trim': final_trim},
-                                      headers={'X-RapidAPI-Host': 'car-stockpile.p.rapidapi.com',
-                                               'X-RapidAPI-Key': '0ccc64153emsh2befbe0a2bfcdd1p1ca214jsn646b219efe35'})
-    raw_data = response_stockpile.json()
-    print(raw_data)
+def car_features(make_stock, best_model, years_first, final_trim, option):
+    if option == 1:
+        URL_stockpile_tire = 'https://car-stockpile.p.rapidapi.com/spec-chassis-wheel'
+
+        response_stockpile = requests.get(url=URL_stockpile_tire,
+                                          params={'make': make_stock, 'model': best_model, 'year': years_first,
+                                                  'trim': final_trim},
+                                          headers={'X-RapidAPI-Host': 'car-stockpile.p.rapidapi.com',
+                                                   'X-RapidAPI-Key': '0ccc64153emsh2befbe0a2bfcdd1p1ca214jsn646b219efe35'})
+        raw_data = response_stockpile.json()
+        return raw_data
 
     # -- FEATURES --
-    URL_stockpile = 'https://car-stockpile.p.rapidapi.com/spec-features'
+    elif option == 2:
+        URL_stockpile_features = 'https://car-stockpile.p.rapidapi.com/spec-features'
 
-    response_stockpile = requests.get(url=URL_stockpile,
-                                      params={'make': make_stock, 'model': best_model, 'year': years_first, 'trim': final_trim},
-                                      headers={'X-RapidAPI-Host': 'car-stockpile.p.rapidapi.com',
-                                               'X-RapidAPI-Key': '0ccc64153emsh2befbe0a2bfcdd1p1ca214jsn646b219efe35'})
-    raw_data = response_stockpile.json()
-    print(raw_data)
+        response_stockpile = requests.get(url=URL_stockpile_features,
+                                          params={'make': make_stock, 'model': best_model, 'year': years_first,
+                                                  'trim': final_trim},
+                                          headers={'X-RapidAPI-Host': 'car-stockpile.p.rapidapi.com',
+                                                   'X-RapidAPI-Key': '0ccc64153emsh2befbe0a2bfcdd1p1ca214jsn646b219efe35'})
+        raw_data = response_stockpile.json()
+        return raw_data
 
-    # --
-    URL_stockpile = 'https://car-stockpile.p.rapidapi.com/spec-general'
+    # -- GENERAL SPECS --
+    elif option == 3:
+        URL_stockpile_general = 'https://car-stockpile.p.rapidapi.com/spec-general'
 
-    response_stockpile = requests.get(url=URL_stockpile,
-                                      params={'make': make_stock, 'model': best_model, 'year': years_first, 'trim': final_trim},
-                                      headers={'X-RapidAPI-Host': 'car-stockpile.p.rapidapi.com',
-                                               'X-RapidAPI-Key': '0ccc64153emsh2befbe0a2bfcdd1p1ca214jsn646b219efe35'})
-    raw_data = response_stockpile.json()
-    print(raw_data)
+        response_stockpile = requests.get(url=URL_stockpile_general,
+                                          params={'make': make_stock, 'model': best_model, 'year': years_first,
+                                                  'trim': final_trim},
+                                          headers={'X-RapidAPI-Host': 'car-stockpile.p.rapidapi.com',
+                                                   'X-RapidAPI-Key': '0ccc64153emsh2befbe0a2bfcdd1p1ca214jsn646b219efe35'})
+        raw_data = response_stockpile.json()
+        return raw_data
 
-
-
-def carquery_api():
-    response_carquery = requests.get(url='https://www.carqueryapi.com/api/0.3/?callback=?&cmd=getMakes&year=2000&sold_in_us=1', headers={'User-Agent' : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.88 Safari/537.36'})
-    print(response_carquery.content.decode())
 
 
 # -- KEYS and URLs --
@@ -225,65 +210,49 @@ API_KEY_stockpile = '0ccc64153emsh2befbe0a2bfcdd1p1ca214jsn646b219efe35'
 
 API_KEY_carsxe = 'vy7h9rr8c_igmdxi7as_v7krx6teu'
 
+# make
+# model
+# years_first
+# msrp
+# other_models_by_make
+# all_trims
+# all_trans
+# tire_list
+# feature_list
+# general_spec
 
-# -- TEST AREA --
 
-# - CARNET.AI
-
-print("")
 make, model, years = carnet_ai()
+print("")
 print(make)
 print(model)
 print(years)
 years_list = years.split('-')
 years_first = years_list[0]
 years_last = years_list[1]
-for x in years_list:
-    print(x)
 
-# print(get_google_result(make, model))
+msrp = get_google_result(make, model)
+print(msrp)
 
-# print("")
-# print('Testing other models')
-# other_models_today = get_other_models()
-# for x in other_models_today:
-#    print(x)
+other_models_by_make = get_other_models(make)
+print(other_models_by_make)
 
-# print("")
-# print('Testing trims')
-# trims = get_trims()
-# for x in trims:
-#    print(x)
+all_trims = get_trims(make, model, years_first)
+print(all_trims)
 
-# this takes way too long
-# print("")
-# print('Testing trans')
-# trans_options = get_transmissions(trims)
-# for x in trans_options:
-#    print(x)
+all_trans = get_transmissions(make, model, years_first, all_trims)
+print(all_trans)
 
+# ignore these variables, they're local to carstockpile
+new_make, bestmod, caryear, finaltrim = carstockpile_api(make, model, years_first)
 
-# msrp = get_google_result()
+tire_list = car_features(new_make, bestmod, caryear, finaltrim, 1)
+print(tire_list)
 
-# ninja_api()
-# shine_api()
+feature_list = car_features(new_make, bestmod, caryear, finaltrim, 2)
+print(feature_list)
+
+general_specs = car_features(new_make, bestmod, caryear, finaltrim, 3)
+print(general_specs)
 
 
-carstockpile_api(make, model, years_first)
-get_google_result(make, model)
-
-# -- CAR STOCKPILE --
-
-
-
-
-
-
-
-
-
-
-
-
-
-# carquery_api()
