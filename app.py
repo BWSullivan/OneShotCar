@@ -3,9 +3,10 @@ import requests
 import json
 import os
 from werkzeug.utils import secure_filename
-from backend import *
+import backend_file
 
 def create_app(test_config=None):
+    make_name, model_name, years = "", "", ""
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
@@ -42,6 +43,12 @@ def create_app(test_config=None):
             return False
     
     #upload image
+    def getFilename(image):
+        filename = secure_filename(image.filename)
+        user_pic_name = os.path.join(app.config["IMAGE_UPLOADS"], filename)
+        backend_file.user_pic_name = user_pic_name
+        return user_pic_name
+
     @app.route('/index', methods=["GET", "POST"])
     def index():
         if request.method == "POST":
@@ -56,13 +63,14 @@ def create_app(test_config=None):
                     print("That image extension is not allowed")
                     return redirect(request.url)
                 else:
-                    filename = secure_filename(image.filename)
-                    image.save(os.path.join(app.config["IMAGE_UPLOADS"], filename))
-                    user_pic = os.path.join(app.config["IMAGE_UPLOADS"], filename)
+                    filename = getFilename(image)
+                    image.save(filename)
+                    #make_name, model_name, years = main.callAPI(filename)
                     print("Image saved!")
 
                 return redirect(request.url)
         return render_template("index.html")
+        
 
     #automatic page
     @app.route('/')
@@ -77,9 +85,8 @@ def create_app(test_config=None):
     #results page
     @app.route('/results')
     def results():
-        return render_template('results_page.html', make_name=make_name, model_name=model_name, years=years, locations='tbc', colors='tbc', safety='tbc', engine='tbc', infotainment='tbc', interior='tbc', comfort='tbc', performance='tbc', safety_features='tbc', interior_features='tbc', comfort_features='tbc', performance_features='tbc')
         make, model, year = backend_file.get_user_picture()
-        return render_template('results_page.html', make_name=make, model_name=model, years=year, locations='tbc', trims='tbc', transmissions='tbc', other_models='tbc', infotainment='tbc', interior='tbc', comfort='tbc', performance='tbc', safety_features='tbc', interior_features='tbc', comfort_features='tbc', performance_features='tbc')
+        return render_template('results_page.html', make_name=make, model_name=model, years=year, locations='tbc', colors='tbc', safety='tbc', engine='tbc', infotainment='tbc', interior='tbc', comfort='tbc', performance='tbc', safety_features='tbc', interior_features='tbc', comfort_features='tbc', performance_features='tbc')
 
     #text search page
     @app.route('/search')
@@ -105,6 +112,7 @@ def create_app(test_config=None):
     @app.route('/resources')
     def resources():
         return render_template('resources.html')
+
 
     return app
 
