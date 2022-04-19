@@ -72,11 +72,6 @@ def create_app(test_config=None):
         return render_template("index.html")
         
 
-    #default page
-    @app.route('/')
-    def home():
-        return render_template("front_page.html")
-
     #automatic page
     @app.route('/')
     def home():
@@ -90,8 +85,8 @@ def create_app(test_config=None):
     #results page
     @app.route('/results')
     def results():
-        make, model, year = backend_file.get_user_picture()
-        return render_template('results_page.html', make_name=make, model_name=model, years=year, locations='tbc', colors='tbc', safety='tbc', engine='tbc', infotainment='tbc', interior='tbc', comfort='tbc', performance='tbc', safety_features='tbc', interior_features='tbc', comfort_features='tbc', performance_features='tbc')
+        #make, model, year = backend_file.get_user_picture()
+        return render_template('results_page.html', make_name=make_name, model_name=model_name, years=years, locations='tbc', colors='tbc', safety='tbc', engine='tbc', infotainment='tbc', interior='tbc', comfort='tbc', performance='tbc', safety_features='tbc', interior_features='tbc', comfort_features='tbc', performance_features='tbc')
 
     #text search page
     @app.route('/search')
