@@ -38,7 +38,7 @@ def carnet_ai():
         years_first = years_list[0]
         years_last = years_list[1]
 
-        return make_name, model_name, years_first, years_last
+        return make_name, model_name, years_first, years_last, probability
 
     except requests.exceptions.RequestException:
         print('error')
@@ -127,8 +127,17 @@ def carstockpile_api(make_stock, model_stock, years_first):
     raw_data = response_stockpile.json()
     list_models = (raw_data['models'])
     string_models = []
+    model_stock = model_stock.rstrip()
+    print('List: ')
+    print(list_models)
     for model_chose in list_models:
+        print('Chosen: ')
+        print(model_chose)
+        print('From AI: ')
+        print(model_stock)
+        print(' ')
         if model_chose == model_stock:  # if you found the model, choose it.
+            print("Success! Found model!")
             string_models = []
             string_models.append(model_chose)
             multiple_models = False
@@ -136,12 +145,10 @@ def carstockpile_api(make_stock, model_stock, years_first):
         if model_chose.find(model) != -1:  # if you don't, append the closest one.
             string_models.append(model_chose)
             multiple_models = True
-
-    best_model = string_models[0]
+    best_model = string_models[0]  # index out of range
     # now have the same models as the model found in carnet API
 
     URL_stockpile = 'https://car-stockpile.p.rapidapi.com/trims'
-
     response_stockpile = requests.get(url=URL_stockpile,
                                       params={'make': make, 'model': best_model, 'year': years_first},
                                       headers={'X-RapidAPI-Host': 'car-stockpile.p.rapidapi.com',
@@ -153,8 +160,7 @@ def carstockpile_api(make_stock, model_stock, years_first):
     for trim in list_trims:
         string_trim.append(trim['trim'])
 
-    final_trim = string_trim[random.randint(0, len(string_trim))]
-    print(final_trim)
+    final_trim = string_trim[random.randint(0, len(string_trim) - 1)]
 
     # URL_stockpile = 'https://car-stockpile.p.rapidapi.com/spec-transmission'
     # response_stockpile = requests.get(url=URL_stockpile, params={'make': 'Audi', 'model': 'RS4 Avant', 'year': '2019', 'trim': '2.9 TFSI quattro'}, headers={'X-RapidAPI-Host' : 'car-stockpile.p.rapidapi.com', 'X-RapidAPI-Key' : '0ccc64153emsh2befbe0a2bfcdd1p1ca214jsn646b219efe35'})
@@ -212,7 +218,7 @@ API_KEY_google = '4be96181d5e32a353a8cb07555e2d6d85ac7809a90bdbdcbb1ff9cf37ab419
 
 API_KEY_stockpile = '0ccc64153emsh2befbe0a2bfcdd1p1ca214jsn646b219efe35'
 
-IMG_DIR = 'comp.jpg'
+IMG_DIR = 'grand.jpg'
 
 # make
 # model
@@ -225,21 +231,29 @@ IMG_DIR = 'comp.jpg'
 # feature_list
 # general_specs
 
-make, model, years_first, years_last = carnet_ai()
-
-msrp = get_google_result(make, model)
-print(msrp)
+make, model, years_first, years_last, probability = carnet_ai()
+print(make)
+print(model)
+print(years_first)
+print(years_last)
+print(probability)
+#msrp = get_google_result(make, model)
+#print(msrp)
 
 other_models_by_make = get_other_models(make)
+print('Others: ')
 print(other_models_by_make)
 
 all_trims = get_trims(make, model, years_first)
+print('Trims: ')
 print(all_trims)
 
 all_trans = get_transmissions(make, model, years_first, all_trims)
+print('Trans: ')
 print(all_trans)
 
 # ignore these variables, they're local to carstockpile
+
 new_make, bestmod, caryear, finaltrim = carstockpile_api(make, model, years_first)
 
 tire_list = car_features(new_make, bestmod, caryear, finaltrim, 1)
@@ -250,3 +264,4 @@ print(feature_list)
 
 general_specs = car_features(new_make, bestmod, caryear, finaltrim, 3)
 print(general_specs)
+
