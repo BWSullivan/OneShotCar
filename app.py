@@ -4,6 +4,7 @@ import json
 import os
 from werkzeug.utils import secure_filename
 import backend_file
+import carinfo
 
 def create_app(test_config=None):
     make_name, model_name, years = "", "", ""
@@ -46,7 +47,7 @@ def create_app(test_config=None):
     def getFilename(image):
         filename = secure_filename(image.filename)
         user_pic_name = os.path.join(app.config["IMAGE_UPLOADS"], filename)
-        backend_file.user_pic_name = user_pic_name
+        carinfo.IMG_DIR = user_pic_name
         return user_pic_name
 
     @app.route('/index', methods=["GET", "POST"])
@@ -85,8 +86,14 @@ def create_app(test_config=None):
     #results page
     @app.route('/results')
     def results():
-        make, model, year = backend_file.get_user_picture()
-        return render_template('results_page.html', make_name=make, model_name=model, years=year, locations='tbc', colors='tbc', safety='tbc', engine='tbc', infotainment='tbc', interior='tbc', comfort='tbc', performance='tbc', safety_features='tbc', interior_features='tbc', comfort_features='tbc', performance_features='tbc')
+        make, model, first_year, last_year = carinfo.carnet_ai()
+        iprice = carinfo.get_google_result(make, model)
+
+        otherModels = carinfo.get_other_models(make)
+        itrims = carinfo.get_trims(make, model, first_year)
+        print(itrims)
+        itransmissions = carinfo.get_transmissions(make, model, first_year, itrims)
+        return render_template('results_page.html', make_name=make, model_name=model, years=first_year, trims=itrims, transmissions=itransmissions, price=iprice, colors='tbc', safety='tbc', engine='tbc', infotainment='tbc', interior='tbc', other_models=otherModels, performance='tbc', safety_features='tbc', interior_features='tbc', comfort_features='tbc', performance_features='tbc')
 
     #text search page
     @app.route('/search')
