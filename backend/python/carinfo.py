@@ -15,31 +15,33 @@ def carnet_ai():
     try:
         data = response.json()  # parsing json answer
         detection_dict = data['detections']
-        img_args = detection_dict[0]
-        amg = img_args['class']
-        probability = amg['probability'] * 100
+        if len(detection_dict) > 0:
+            img_args = detection_dict[0]
+            amg = img_args['class']
+            probability = amg['probability'] * 100
 
-        mmg = img_args['mmg']
-        answer_dict = mmg[0]
+            mmg = img_args['mmg']
+            answer_dict = mmg[0]
 
-        make_name = answer_dict['make_name']
+            make_name = answer_dict['make_name']
 
-        # Some answers come in from API like this: Accord (North America)
-        # so to get rid of '(<location>)' we split as shown below.
-        # This works even if answer doesn't have location.
+            # Some answers come in from API like this: Accord (North America)
+            # so to get rid of '(<location>)' we split as shown below.
+            # This works even if answer doesn't have location.
 
-        model_name_location = answer_dict['model_name']
-        model_name_list = model_name_location.split('(')
-        model_name = model_name_list[0]  # throw away location
+            model_name_location = answer_dict['model_name']
+            model_name_list = model_name_location.split('(')
+            model_name = model_name_list[0]  # throw away location
 
-        # years comes in from API like this: 1997 - 2018
-        years = answer_dict['years']
-        years_list = years.split('-')
-        years_first = years_list[0]
-        years_last = years_list[1]
+            # years comes in from API like this: 1997 - 2018
+            years = answer_dict['years']
+            years_list = years.split('-')
+            years_first = years_list[0]
+            years_last = years_list[1]
 
-        return make_name, model_name, years_first, years_last, probability
-
+            return make_name, model_name, years_first, years_last, probability
+        elif len(detection_dict) == 0:
+            return "Unknown", "Unknown", "Unknown", "Unknown", "Unknown"
     except requests.exceptions.RequestException:
         print('error')
         print(response.text)
@@ -232,36 +234,35 @@ IMG_DIR = 'grand.jpg'
 # general_specs
 
 make, model, years_first, years_last, probability = carnet_ai()
-print(make)
-print(model)
-print(years_first)
-print(years_last)
-print(probability)
-#msrp = get_google_result(make, model)
+# print(make)
+# print(model)
+# print(years_first)
+# print(years_last)
+# print(probability)
+msrp = get_google_result(make, model)
 #print(msrp)
 
 other_models_by_make = get_other_models(make)
-print('Others: ')
-print(other_models_by_make)
+# print('Others: ')
+# print(other_models_by_make)
 
 all_trims = get_trims(make, model, years_first)
-print('Trims: ')
-print(all_trims)
+# print('Trims: ')
+# print(all_trims)
 
 all_trans = get_transmissions(make, model, years_first, all_trims)
-print('Trans: ')
-print(all_trans)
+# print('Trans: ')
+# print(all_trans)
 
 # ignore these variables, they're local to carstockpile
 
 new_make, bestmod, caryear, finaltrim = carstockpile_api(make, model, years_first)
 
 tire_list = car_features(new_make, bestmod, caryear, finaltrim, 1)
-print(tire_list)
+# print(tire_list)
 
 feature_list = car_features(new_make, bestmod, caryear, finaltrim, 2)
-print(feature_list)
+# print(feature_list)
 
 general_specs = car_features(new_make, bestmod, caryear, finaltrim, 3)
-print(general_specs)
-
+# print(general_specs)
