@@ -2,7 +2,10 @@
 <html>
 <head>
   <title>Search</title>
+
   <link href="/static/dist/output.css" rel="stylesheet" />
+  <link href="/static/dist/dyslexic_font.css" rel="stylesheet"/>
+
 </head>
 <body>
     <!-- navigation bar -->
@@ -48,5 +51,66 @@
     </nav>
 
     <h1>Text Search</h1>
+
+<!--Taking in inputs from user-->
+    <form method="POST">
+
+<div class="flex justify-center">
+  <div>
+
+    <div class="mb-3 xl:w-96">
+      <label
+        for="makeInput"
+        class="form-label inline-block mb-2 text-gray-700 text-xl"
+        >Make</label>
+      <input
+        type="text"
+        class=" form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none "
+        id="makeInput"
+        name="makeInput"
+        placeholder="Enter Make"
+        value="{{request.form['makeInput']}}"> </input>
+    </div>
+
+    <div class="mb-3 xl:w-96">
+      <label for="modelInput" class="form-label inline-block mb-2 text-gray-700 text-xl"
+
+        >Model</label
+      >
+      <input
+        type="text"
+        class=" form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none "
+        id="modelInput"
+        placeholder="Enter Model"
+        name="modelInput"
+        value="{{request.form['modelInput']}}"> </input>
+
+    </div>
+
+    <div class="mb-3 xl:w-96">
+      <label
+        for="yearInput"
+        class="form-label inline-block mb-2 text-gray-700 text-xl"
+        >Year</label
+      >
+      <input
+        type="number"
+         class=" form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none "
+        id="yearInput"
+        placeholder="Enter Year"
+        name="yearInput"
+        value="{{request.form['yearInput']}}"> </input>
+
+    </div>
+  </div>
+</div>
+    <button type="submit">Submit</button>
+        </form>
+
+
+<!--    <a href="results">Click Here For Results!</a>-->
+
+
+
 </body>
 </html>
