@@ -41,8 +41,7 @@ def carnet_ai():
 
             return make_name, model_name, years_first, years_last, probability
         elif len(detection_dict) == 0:
-            return "Unknown", "Unknown", 0, 0, 0
-
+            return "Unknown", "Unknown", "Unknown", "Unknown", "Unknown"
     except requests.exceptions.RequestException:
         print('error')
         print(response.text)
