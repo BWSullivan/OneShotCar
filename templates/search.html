@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Search</title>
+  <title>Search Results</title>
   <link href="/static/dist/output.css" rel="stylesheet" />
 </head>
 <body class="font-serif">
@@ -22,10 +22,10 @@
         <div class="hidden w-full md:block md:w-auto h-50" id="mobile-menu">
           <ul class="flex flex-col mt-4 md:flex-row md:space-x-10 md:mt-0 md:text-sm md:font-medium h-10">
             <li>
-              <a href="front_page" class="block py-2 pr-4 pl-3 text-white bg-[#bd672a] rounded md:bg-transparent md:text-gray-700 md:p-0 dark:text-white font-bold" aria-current="page">Home</a>
+              <a href="front_page" class="block py-2 pr-4 pl-3 text-white bg-[#bd672a] rounded md:bg-transparent md:text-[#bd672a] md:p-0 dark:text-white font-bold" aria-current="page">Home</a>
             </li>
             <li>
-              <a href="search" class="block py-2 pr-4 pl-3 text-[#bd672a] border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-[#bd672a] md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 font-bold">Search</a>
+              <a href="search" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-[#bd672a] md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 font-bold">Search</a>
             </li>
             <li>
               <a href="about" class="text-center block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-[#bd672a] md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 font-bold">About Us</a>
@@ -61,8 +61,95 @@
         </div>
       </div>
     </nav>
+  
+      <!-- team logo -->
+      <div class="flex flex-wrap justify-center">
+        <div class="w-6/12 sm:w-4/12 px-4">
+          <img src="/static/photos/logo.PNG" alt="OneShot Car Logo" class="shadow-lg rounded-full max-w-full h-auto align-middle border-none hue-rotate-[140deg] saturate-[.75]" />
+        </div>
+      </div>
 
-    <!-- header -->
-    <header class="text-[#bd672a] text-6xl text-center my-6 font-extrabold" style="text-shadow: 1px 1px 2px black">Text Search</header>
+    <!-- page contents -->
+    <header class="text-[#bd672a] text-5xl text-center my-6 font-extrabold" style="text-shadow: 1px 1px 2px black">We found the car you were searching for!</header>
+
+    <!-- basic features -->
+    <div class="my-6">
+        <h1 class=" text-[#bd672a] font-extrabold text-center text-3xl leading-loose gap-y-6">Basic Info</h1>
+    
+        <div class="grid grid-cols-2 gap-3 mx-20">
+            <div>
+                <h2 class="font-bold text-3xl">Main Features</h2>
+                <!-- make -->
+                <div style="width: 50%; float: left;" class="text-2xl font-bold">
+                  Make:
+                </div>
+                <div style="margin-left: 50%;" class="text-2xl">
+                  {{make_name}}
+                </div>
+                <!-- model -->
+                <div style="width: 50%; float: left;" class="text-2xl font-bold">
+                  Model:
+                </div>
+                <div style="margin-left: 50%;" class="text-2xl">
+                  {{model_name}}
+                </div>
+                <!-- years -->
+                <div style="width: 50%; float: left;" class="text-2xl font-bold">
+                  Years:
+                </div>
+                <div style="margin-left: 50%;" class="text-2xl">
+                  {{years}}
+                </div>
+            </div>
+            <div>
+                <h2 class="font-bold text-3xl">2022 Car Price</h2>
+                <p class="text-2xl">{{price}}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- more features -->
+    <div class="mt-6">
+        <h1 class=" text-[#bd672a] font-extrabold text-center text-3xl leading-loose gap-y-6">More Features Below...</h1>
+    
+        <div class="grid grid-cols-2 gap-3 mx-20">
+            <div>
+                <h2 class="font-bold text-3xl">Trims</h2>
+                <ul>
+                    {%for i in range(0,trims|length)%}
+                        <li> {{trims[i]}} </li>
+                    {%endfor%}
+                </ul>
+<!--                <p class="text-2xl">{{trims}}</p>-->
+            </div>
+            <div>
+                <h2 class="font-bold text-3xl">Transmissions</h2>
+                 <ul>
+                    {%for i in range(0,transmissions|length)%}
+                        <li> {{transmissions[i]}} </li>
+                    {%endfor%}
+                </ul>
+<!--                <p class="text-2xl">{{transmissions}}</p>-->
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-2 gap-3 mx-20 my-10">
+            <div>
+                <h2 class="font-bold text-3xl">Other Models</h2>
+                <ul>
+                    {%for i in range(0,other_models|length)%}
+                        <li> {{other_models[i]}} </li>
+                    {%endfor%}
+                </ul>
+
+<!--                <p class="text-2xl">{{other_models[0]}}</p>-->
+            </div>
+            <div>
+                <h2 class="font-bold text-3xl">Infotainment</h2>
+                <p class="text-2xl">{{infotainment}}</p>
+            </div>
+
+        </div>
+    </div>
 </body>
 </html>
