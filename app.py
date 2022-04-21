@@ -83,12 +83,16 @@ def create_app(test_config=None):
     def front_page():
         return render_template('front_page.html')
 
+    @app.route('/pop_up_error')
+    def pop_up_error():
+        return render_template('pop_up_error.html')
+
     #results page
     @app.route('/results')
     def results():
         make, model, first_year, last_year, prob= carinfo.carnet_ai()
         if (make == "Unknown"):
-            return render_template('index.html')
+            return render_template('pop_up_error.html')
         else:
             iprice = carinfo.get_google_result(make, model)
             otherModels = carinfo.get_other_models(make)
