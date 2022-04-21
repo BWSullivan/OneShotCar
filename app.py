@@ -3,7 +3,7 @@ import requests
 import json
 import os
 from werkzeug.utils import secure_filename
-import backend_file
+# import backend_file
 import carinfo
 
 def create_app(test_config=None):
@@ -86,20 +86,32 @@ def create_app(test_config=None):
     #results page
     @app.route('/results')
     def results():
-        make, model, first_year, last_year = carinfo.carnet_ai()
-        iprice = carinfo.get_google_result(make, model)
-
-        otherModels = carinfo.get_other_models(make)
-        itrims = carinfo.get_trims(make, model, first_year)
-        print(itrims)
-        itransmissions = carinfo.get_transmissions(make, model, first_year, itrims)
-        return render_template('results_page.html', make_name=make, model_name=model, years=first_year, trims=itrims, transmissions=itransmissions, price=iprice, colors='tbc', safety='tbc', engine='tbc', infotainment='tbc', interior='tbc', other_models=otherModels, performance='tbc', safety_features='tbc', interior_features='tbc', comfort_features='tbc', performance_features='tbc')
+        make, model, first_year, last_year, prob= carinfo.carnet_ai()
+        if (make == "Unknown"):
+            return render_template('index.html')
+        else:
+            iprice = carinfo.get_google_result(make, model)
+            otherModels = carinfo.get_other_models(make)
+            itrims = carinfo.get_trims(make, model, first_year)
+            itransmissions = carinfo.get_transmissions(make, model, first_year, itrims)
+            return render_template('results_page.html', make_name=make, model_name=model, years=first_year, trims=itrims, transmissions=itransmissions, price=iprice, colors='tbc', safety='tbc', engine='tbc', infotainment='tbc', interior='tbc', other_models=otherModels, performance='tbc', safety_features='tbc', interior_features='tbc', comfort_features='tbc', performance_features='tbc')
 
     #text search page
-    @app.route('/search')
+    @app.route('/search', methods=["POST", "GET"])
     def search():
-        return render_template('search.html')
-    
+        textSearch = True
+        if request.method == "POST":
+            user_input_make = request.form['makeInput']
+            user_input_model = request.form['modelInput']
+            user_input_year = request.form['yearInput']
+            iprice = carinfo.get_google_result(user_input_make, user_input_model)
+            otherModels = carinfo.get_other_models(user_input_make)
+            itrims = carinfo.get_trims(user_input_make, user_input_model, user_input_year)
+            itransmissions = carinfo.get_transmissions(user_input_make, user_input_model, user_input_year, itrims)
+            return render_template('results_page.html', make_name=user_input_make, model_name=user_input_model, years=user_input_year, trims=itrims, transmissions=itransmissions, price=iprice, colors='tbc', safety='tbc', engine='tbc', infotainment='tbc', interior='tbc', other_models=otherModels, performance='tbc', safety_features='tbc', interior_features='tbc', comfort_features='tbc', performance_features='tbc')
+        else:
+            return render_template('search.html')
+
     #about us page
     @app.route('/about')
     def about():
