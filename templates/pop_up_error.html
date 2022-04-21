@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Error</title>
+  <link href="/static/dist/output.css" rel="stylesheet" />
+</head>
+
+<body>
+
+<div class="bg-black bg-opacity-50  absolute inset-0 flex justift-center items-center">
+
+ <div class="bg-gray-200">
+   <div class="flex justify-between items-center">
+      <h4 class="text-lg font-bold"> Error  </h4>
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+   <div class="mt-2">
+     <p>This car was not identifiable, try again.</p>
+   </div>
+
+   <div class="mt-3 flex justify-end">
+     <button type="button" onclick="window.location.href='{{url_for('index') }}';" class="px-3 py-1 bg-red-500 rounded" id="delete-btn">Okay</button>
+   </div>
+ </div>
+
+</div>
+
+
+</body>
+</html>
