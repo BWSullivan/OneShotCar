@@ -114,7 +114,6 @@ def get_transmissions(make_name, model_name, years_first, list_trims):
 def carstockpile_api(make_stock, model_stock, years_first):
     # get list of cars from API
     # my goal here is to get the API to maybe work in the best way possible
-    multiple_models = False
 
     URL_stockpile = 'https://car-stockpile.p.rapidapi.com/models'
 
@@ -130,23 +129,13 @@ def carstockpile_api(make_stock, model_stock, years_first):
     list_models = (raw_data['models'])
     string_models = []
     model_stock = model_stock.rstrip()
-    print('List: ')
-    print(list_models)
     for model_chose in list_models:
-        print('Chosen: ')
-        print(model_chose)
-        print('From AI: ')
-        print(model_stock)
-        print(' ')
         if model_chose == model_stock:  # if you found the model, choose it.
-            print("Success! Found model!")
             string_models = []
             string_models.append(model_chose)
-            multiple_models = False
             break
         if model_chose.find(model) != -1:  # if you don't, append the closest one.
             string_models.append(model_chose)
-            multiple_models = True
     best_model = string_models[0]  # index out of range
     # now have the same models as the model found in carnet API
 
