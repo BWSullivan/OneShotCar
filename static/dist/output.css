@@ -1,5 +1,5 @@
 /*
-! tailwindcss v3.0.24 | MIT License | https://tailwindcss.com
+! tailwindcss v3.0.23 | MIT License | https://tailwindcss.com
 */
 
 /*
@@ -1536,7 +1536,9 @@ input:checked ~ .dot {
     .md\:dark\:hover\:bg-transparent:hover {
       background-color: transparent;
     }
+  }
 
+  @media (prefers-color-scheme: dark) {
     .md\:dark\:hover\:text-white:hover {
       --tw-text-opacity: 1;
       color: rgb(255 255 255 / var(--tw-text-opacity));
