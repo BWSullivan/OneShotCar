@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OneShot Car</title>
-    <link href="/static/dist/output.css" rel="stylesheet" />
+    <link id="theme" href="/static/dist/output.css" rel="stylesheet" type="text/css" />
+
+<!--    <link href="/static/dist/output.css" rel="stylesheet" />-->
 </head>
 <body class="overflow-hidden">
-  <div class="flex flex-row font-serif">
+  <div class="flex flex-row" style=" font-family: 'OpenDyslexic';">
     <!-- left column -->
     <div class="my-6 ml-5 -mt-[12rem] grow w-3/12">
         <div class="w-full">
@@ -75,23 +77,25 @@
         </div>
 
         <!-- Toggle B -->
-        <div class="flex items-center justify-center w-full mt-10">
-          <label for="toggleB" class="flex items-center cursor-pointer">
-            <!-- toggle -->
-            <div class="relative">
-              <!-- input -->
-              <input type="checkbox" id="toggleB" class="sr-only">
-              <!-- line -->
-              <div class="block bg-[#bd672a] w-14 h-8 rounded-full"></div>
-              <!-- dot -->
-              <div class="dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition"></div>
-            </div>
-            <!-- label -->
-            <div class="ml-3 text-gray-700 font-bold text-xl">
-              Dyslexia Toggle
-            </div>
-          </label>
-        </div>
+        <button  class= "button" onclick="toggleTheme()" > <strong>Change Font!</strong></button>
+
+<!--        <div class="flex items-center justify-center w-full mt-10">-->
+<!--          <label for="toggleB" class="flex items-center cursor-pointer">-->
+<!--            &lt;!&ndash; toggle &ndash;&gt;-->
+<!--            <div class="relative">-->
+<!--              &lt;!&ndash; input &ndash;&gt;-->
+<!--              <input type="checkbox" id="toggleB" class="sr-only">-->
+<!--              &lt;!&ndash; line &ndash;&gt;-->
+<!--              <div class="block bg-[#bd672a] w-14 h-8 rounded-full"></div>-->
+<!--              &lt;!&ndash; dot &ndash;&gt;-->
+<!--              <div class="dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition"></div>-->
+<!--            </div>-->
+<!--            &lt;!&ndash; label &ndash;&gt;-->
+<!--            <div class="ml-3 text-gray-700 font-bold text-xl">-->
+<!--              Dyslexia Toggle-->
+<!--            </div>-->
+<!--          </label>-->
+<!--        </div>-->
     </div>
 
     <!-- right column -->
@@ -114,3 +118,46 @@
   </div>
 </body>
 </html>
+
+
+<script>
+<!--"/static/dist/output.css"-->
+<!--'/static/fonts/stylesheet.css'-->
+
+function toggleTheme() {
+  // Obtains an array of all <link> elements.
+  var theme = document.getElementsByTagName('link')[0];
+  console.log("got to toggleTheme function")
+
+  // Change the value of href attribute to change the css sheet.
+  if (theme.getAttribute('href') == "/static/dist/output.css") { //dist
+      theme.setAttribute('href', '/static/fonts/stylesheet.css');
+      localStorage.setItem("styleType", '/static/fonts/stylesheet.css');
+  } else {
+      theme.setAttribute('href', "/static/dist/output.css"); dist
+      localStorage.setItem("styleType", "/static/dist/output.css"); dist
+  }
+}
+
+function setDefault(){
+  console.log("got to setDefault function")
+  theme.setAttribute('href', "/static/dist/output.css"); dist
+
+}
+
+function keepCSS(){
+  var theme = document.getElementsByTagName('link')[0];
+  console.log("got to keepCSS function")
+  if (theme.getAttribute('href') == localStorage.getItem("styleType")){ //if style.css is the current styleType, change nothing
+  }
+  else{
+    theme.setAttribute('href', localStorage.getItem("styleType")); //if style.css is not the current styleType, change to style2.css
+  }
+}
+
+window.onload = function(){
+  setDefault();
+  keepCSS();
+  console.log("got to onload function")
+}
+</script>
