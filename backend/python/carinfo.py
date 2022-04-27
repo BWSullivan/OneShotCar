@@ -218,7 +218,7 @@ def google_images():
     image1 = (googleanswer[0])['original']
     image2 = (googleanswer[1])['original']
     image3 = (googleanswer[2])['original']
-    image4 = (googleanswer[4])['original']
+    image4 = (googleanswer[3])['original']
 
     print(image1)
     print(image2)
@@ -251,28 +251,6 @@ IMG_DIR = 'grand.jpg'
 # feature_list
 # general_specs
 
-<<<<<<< Updated upstream
-make, model, years_first, years_last, probability = carnet_ai()
-print(make)
-print(model)
-print(years_first)
-print(years_last)
-print(probability)
-#msrp = get_google_result(make, model)
-#print(msrp)
-
-other_models_by_make = get_other_models(make)
-print('Others: ')
-print(other_models_by_make)
-
-all_trims = get_trims(make, model, years_first)
-print('Trims: ')
-print(all_trims)
-
-all_trans = get_transmissions(make, model, years_first, all_trims)
-print('Trans: ')
-print(all_trans)
-=======
 #make, model, years_first, years_last, probability = carnet_ai()
 # print(make)
 # print(model)
@@ -293,23 +271,12 @@ print(all_trans)
 #all_trans = get_transmissions(make, model, years_first, all_trims)
 # print('Trans: ')
 # print(all_trans)
->>>>>>> Stashed changes
 
 # ignore these variables, they're local to carstockpile
 
 #new_make, bestmod, caryear, finaltrim = carstockpile_api(make, model, years_first)
 
-<<<<<<< Updated upstream
-tire_list = car_features(new_make, bestmod, caryear, finaltrim, 1)
-print(tire_list)
 
-feature_list = car_features(new_make, bestmod, caryear, finaltrim, 2)
-print(feature_list)
-
-general_specs = car_features(new_make, bestmod, caryear, finaltrim, 3)
-print(general_specs)
-
-=======
 #tire_list = car_features(new_make, bestmod, caryear, finaltrim, 1)
 # print(tire_list)
 
@@ -320,4 +287,3 @@ print(general_specs)
 # print(general_specs)
 
 google_images()
->>>>>>> Stashed changes
