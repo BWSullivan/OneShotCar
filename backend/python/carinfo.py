@@ -208,6 +208,24 @@ def car_features(make_stock, best_model, years_first, final_trim, option):
         return raw_data
 
 
+def google_images():
+    engine = "google"
+    q = 'Tesla' + 'Model 3'
+
+    response_google = requests.get(url='https://serpapi.com/search.json'
+                                       '?engine=' + engine + '&q=' + q + '&api_key=' + API_KEY_google + '&tbm=isch')
+    googleanswer = response_google.json()['images_results']
+    image1 = (googleanswer[0])['original']
+    image2 = (googleanswer[1])['original']
+    image3 = (googleanswer[2])['original']
+    image4 = (googleanswer[4])['original']
+
+    print(image1)
+    print(image2)
+    print(image3)
+    print(image4)
+
+
 # -- KEYS and URLs --
 
 API_KEY_carnet = 'ec8de34a-4d87-44c5-b569-3482f7a12858'
@@ -217,6 +235,8 @@ API_KEY_carinfo = 'haOKbNWT5dbmE1SAiFodnUbaMojtX75izMNdChLyulTuo3Ww1reCmA1CqEKR'
 API_KEY_google = '4be96181d5e32a353a8cb07555e2d6d85ac7809a90bdbdcbb1ff9cf37ab41968'
 
 API_KEY_stockpile = '0ccc64153emsh2befbe0a2bfcdd1p1ca214jsn646b219efe35'
+
+API_KEY_scraper = '465078331accb68e1ddb3184bc3b4a53'
 
 IMG_DIR = 'grand.jpg'
 
@@ -231,6 +251,7 @@ IMG_DIR = 'grand.jpg'
 # feature_list
 # general_specs
 
+<<<<<<< Updated upstream
 make, model, years_first, years_last, probability = carnet_ai()
 print(make)
 print(model)
@@ -251,11 +272,34 @@ print(all_trims)
 all_trans = get_transmissions(make, model, years_first, all_trims)
 print('Trans: ')
 print(all_trans)
+=======
+#make, model, years_first, years_last, probability = carnet_ai()
+# print(make)
+# print(model)
+# print(years_first)
+# print(years_last)
+# print(probability)
+#msrp = get_google_result(make, model)
+#print(msrp)
+
+#other_models_by_make = get_other_models(make)
+# print('Others: ')
+# print(other_models_by_make)
+
+#all_trims = get_trims(make, model, years_first)
+# print('Trims: ')
+# print(all_trims)
+
+#all_trans = get_transmissions(make, model, years_first, all_trims)
+# print('Trans: ')
+# print(all_trans)
+>>>>>>> Stashed changes
 
 # ignore these variables, they're local to carstockpile
 
-new_make, bestmod, caryear, finaltrim = carstockpile_api(make, model, years_first)
+#new_make, bestmod, caryear, finaltrim = carstockpile_api(make, model, years_first)
 
+<<<<<<< Updated upstream
 tire_list = car_features(new_make, bestmod, caryear, finaltrim, 1)
 print(tire_list)
 
@@ -265,3 +309,15 @@ print(feature_list)
 general_specs = car_features(new_make, bestmod, caryear, finaltrim, 3)
 print(general_specs)
 
+=======
+#tire_list = car_features(new_make, bestmod, caryear, finaltrim, 1)
+# print(tire_list)
+
+#feature_list = car_features(new_make, bestmod, caryear, finaltrim, 2)
+# print(feature_list)
+
+#general_specs = car_features(new_make, bestmod, caryear, finaltrim, 3)
+# print(general_specs)
+
+google_images()
+>>>>>>> Stashed changes
