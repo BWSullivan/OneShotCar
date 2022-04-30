@@ -23,6 +23,12 @@ def carnet_ai():
         answer_dict = mmg[0]
 
         make_name = answer_dict['make_name']
+        # I have to hardcode stuff to get it through the other API's...
+        # this is a temporary solution... this is stupid... Too bad!:
+        if make_name == 'Mercedes-Benz':
+            make_name = 'Mercedes'
+        if make_name == 'MAZDA':
+            make_name = 'Mazda'
 
         # Some answers come in from API like this: Accord (North America)
         # so to get rid of '(<location>)' we split as shown below.
@@ -31,6 +37,7 @@ def carnet_ai():
         model_name_location = answer_dict['model_name']
         model_name_list = model_name_location.split('(')
         model_name = model_name_list[0]  # throw away location
+
 
         # years comes in from API like this: 1997 - 2018
         years = answer_dict['years']
@@ -131,6 +138,7 @@ def carstockpile_api(make_stock, model_stock, years_first):
     model_stock = model_stock.rstrip()
     for model_chose in list_models:
         if model_chose == model_stock:  # if you found the model, choose it.
+            string_models = []
             string_models.append(model_chose)
             break
         if model_chose.find(model) != -1:  # if you don't, append the closest one.
@@ -140,7 +148,7 @@ def carstockpile_api(make_stock, model_stock, years_first):
 
     URL_stockpile = 'https://car-stockpile.p.rapidapi.com/trims'
     response_stockpile = requests.get(url=URL_stockpile,
-                                      params={'make': make, 'model': best_model, 'year': years_first},
+                                      params={'make': make_stock, 'model': best_model, 'year': years_first},
                                       headers={'X-RapidAPI-Host': 'car-stockpile.p.rapidapi.com',
                                                'X-RapidAPI-Key': '0ccc64153emsh2befbe0a2bfcdd1p1ca214jsn646b219efe35'})
     raw_data = response_stockpile.json()
@@ -151,10 +159,6 @@ def carstockpile_api(make_stock, model_stock, years_first):
         string_trim.append(trim['trim'])
 
     final_trim = string_trim[random.randint(0, len(string_trim) - 1)]
-
-    # URL_stockpile = 'https://car-stockpile.p.rapidapi.com/spec-transmission'
-    # response_stockpile = requests.get(url=URL_stockpile, params={'make': 'Audi', 'model': 'RS4 Avant', 'year': '2019', 'trim': '2.9 TFSI quattro'}, headers={'X-RapidAPI-Host' : 'car-stockpile.p.rapidapi.com', 'X-RapidAPI-Key' : '0ccc64153emsh2befbe0a2bfcdd1p1ca214jsn646b219efe35'})
-    # print(response_stockpile.json())
 
     # we can finally make requests!
     return make, best_model, years_first, final_trim
@@ -236,7 +240,7 @@ API_KEY_stockpile = '0ccc64153emsh2befbe0a2bfcdd1p1ca214jsn646b219efe35'
 
 API_KEY_scraper = '465078331accb68e1ddb3184bc3b4a53'
 
-IMG_DIR = 'super.png'  # to be changed to accomidate user upload
+IMG_DIR = 'mee.jpg'  # to be changed to accomidate user upload
 
 # -- VARIABLES TO BE USED IN FRONTEND --
 
