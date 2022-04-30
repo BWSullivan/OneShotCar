@@ -112,7 +112,6 @@ def get_transmissions(make_name, model_name, years_first, list_trims):
 def carstockpile_api(make_stock, model_stock, years_first):
     # get list of cars from API
     # my goal here is to get the API to maybe work in the best way possible
-    multiple_models = False
 
     URL_stockpile = 'https://car-stockpile.p.rapidapi.com/models'
 
@@ -128,23 +127,12 @@ def carstockpile_api(make_stock, model_stock, years_first):
     list_models = (raw_data['models'])
     string_models = []
     model_stock = model_stock.rstrip()
-    print('List: ')
-    print(list_models)
     for model_chose in list_models:
-        print('Chosen: ')
-        print(model_chose)
-        print('From AI: ')
-        print(model_stock)
-        print(' ')
         if model_chose == model_stock:  # if you found the model, choose it.
-            print("Success! Found model!")
-            string_models = []
             string_models.append(model_chose)
-            multiple_models = False
             break
         if model_chose.find(model) != -1:  # if you don't, append the closest one.
             string_models.append(model_chose)
-            multiple_models = True
     best_model = string_models[0]  # index out of range
     # now have the same models as the model found in carnet API
 
@@ -208,22 +196,19 @@ def car_features(make_stock, best_model, years_first, final_trim, option):
         return raw_data
 
 
-def google_images():
+def google_images(make_name, model_name):
     engine = "google"
-    q = 'Tesla' + 'Model 3'
+    q = make_name + model_name
 
     response_google = requests.get(url='https://serpapi.com/search.json'
                                        '?engine=' + engine + '&q=' + q + '&api_key=' + API_KEY_google + '&tbm=isch')
     googleanswer = response_google.json()['images_results']
-    image1 = (googleanswer[0])['original']
-    image2 = (googleanswer[1])['original']
-    image3 = (googleanswer[2])['original']
-    image4 = (googleanswer[3])['original']
-
-    print(image1)
-    print(image2)
-    print(image3)
-    print(image4)
+    results = []
+    results.append((googleanswer[0])['original'])
+    results.append((googleanswer[1])['original'])
+    results.append((googleanswer[2])['original'])
+    results.append((googleanswer[3])['original'])
+    return results
 
 
 # -- KEYS and URLs --
@@ -238,52 +223,50 @@ API_KEY_stockpile = '0ccc64153emsh2befbe0a2bfcdd1p1ca214jsn646b219efe35'
 
 API_KEY_scraper = '465078331accb68e1ddb3184bc3b4a53'
 
-IMG_DIR = 'grand.jpg'
+IMG_DIR = 'super.png'  # to be changed to accomidate user upload
 
-# make
-# model
-# years_first
-# msrp
-# other_models_by_make
-# all_trims
-# all_trans
-# tire_list
-# feature_list
-# general_specs
+# -- VARIABLES TO BE USED IN FRONTEND --
 
-#make, model, years_first, years_last, probability = carnet_ai()
-# print(make)
-# print(model)
-# print(years_first)
-# print(years_last)
-# print(probability)
-#msrp = get_google_result(make, model)
-#print(msrp)
+make, model, years_first, years_last, probability = carnet_ai()
 
-#other_models_by_make = get_other_models(make)
-# print('Others: ')
-# print(other_models_by_make)
+msrp = get_google_result(make, model)
 
-#all_trims = get_trims(make, model, years_first)
-# print('Trims: ')
-# print(all_trims)
+other_models_by_make = get_other_models(make)
 
-#all_trans = get_transmissions(make, model, years_first, all_trims)
-# print('Trans: ')
-# print(all_trans)
+all_trims = get_trims(make, model, years_first)
+all_trans = get_transmissions(make, model, years_first, all_trims)
 
-# ignore these variables, they're local to carstockpile
+# ignore new_make, bestmod, caryear, finaltrim, they're local to the carfeatures() function
+new_make, bestmod, caryear, finaltrim = carstockpile_api(make, model, years_first)
 
-#new_make, bestmod, caryear, finaltrim = carstockpile_api(make, model, years_first)
+tire_list = car_features(new_make, bestmod, caryear, finaltrim, 1)
 
+feature_list = car_features(new_make, bestmod, caryear, finaltrim, 2)
 
-#tire_list = car_features(new_make, bestmod, caryear, finaltrim, 1)
-# print(tire_list)
+general_specs = car_features(new_make, bestmod, caryear, finaltrim, 3)
 
-#feature_list = car_features(new_make, bestmod, caryear, finaltrim, 2)
-# print(feature_list)
+exterior_list = google_images(make, model)
 
-#general_specs = car_features(new_make, bestmod, caryear, finaltrim, 3)
-# print(general_specs)
+# -- DEBUG PRINT STATEMENTS --
 
-google_images()
+print('Make: ' + make)
+print('Model: ' + model)
+print('Years First: ' + years_first)
+print('Years Last: ' + years_last)
+print('Probability: ')
+print(probability)
+print('MSRP: ' + msrp)
+print('Other models by make: ')
+print(other_models_by_make)
+print('Trims: ')
+print(all_trims)
+print('Trans: ')
+print(all_trans)
+print('Tire Data: ')
+print(tire_list)
+print('Features Data:')
+print(feature_list)
+print('General Data: ')
+print(general_specs)
+print('Google Image results: ')
+print(exterior_list)
