@@ -51,17 +51,16 @@ def get_google_result(make_name, model_name):
     q = make_name + model_name + "MSRP"
 
     response_google = requests.get(url='https://serpapi.com/search.json'
-                                       '?engine=' + engine + '&q=' + q + '&api_key=' + API_KEY_google)
+                                       '?engine=' + engine + '&q=' + q + '&api_key=' + API_KEY_google + '&gl=us')
     googleanswer = response_google.json()
-    # print(googleanswer['knowledge_graph'])
     try:
         knowledge = googleanswer['knowledge_graph']
     except KeyError:
-        return "MSRP not found!"
+        return "MSRP not found! (knowledge_graph error)"
     try:
         return knowledge['msrp']
     except KeyError:
-        return "MSRP not found!"
+        return "MSRP not found! (msrp error)"
 
 
 # returns list of other models
@@ -102,7 +101,10 @@ def get_transmissions(make_name, model_name, years_first, list_trims):
         for trans in transmissions:
             try:
                 if trans['transmission'] not in list_of_trans:
-                    list_of_trans.append(trans['transmission'])
+                    if trans['transmission'] is None:
+                        continue
+                    else:
+                        list_of_trans.append(trans['transmission'])
             except TypeError:
                 print("None found!")
     return list_of_trans
@@ -195,6 +197,17 @@ def car_features(make_stock, best_model, years_first, final_trim, option):
         raw_data = response_stockpile.json()
         return raw_data
 
+    elif option == 4:
+        URL_stockpile_general = 'https://car-stockpile.p.rapidapi.com/spec-fuel-engine'
+
+        response_stockpile = requests.get(url=URL_stockpile_general,
+                                          params={'make': make_stock, 'model': best_model, 'year': years_first,
+                                                  'trim': final_trim},
+                                          headers={'X-RapidAPI-Host': 'car-stockpile.p.rapidapi.com',
+                                                   'X-RapidAPI-Key': '0ccc64153emsh2befbe0a2bfcdd1p1ca214jsn646b219efe35'})
+        raw_data = response_stockpile.json()
+        return raw_data
+
 
 def google_images(make_name, model_name):
     engine = "google"
@@ -234,6 +247,7 @@ msrp = get_google_result(make, model)
 other_models_by_make = get_other_models(make)
 
 all_trims = get_trims(make, model, years_first)
+
 all_trans = get_transmissions(make, model, years_first, all_trims)
 
 # ignore new_make, bestmod, caryear, finaltrim, they're local to the carfeatures() function
@@ -245,7 +259,9 @@ feature_list = car_features(new_make, bestmod, caryear, finaltrim, 2)
 
 general_specs = car_features(new_make, bestmod, caryear, finaltrim, 3)
 
-exterior_list = google_images(make, model)
+engine_specs = car_features(new_make, bestmod, caryear, finaltrim, 4)
+
+exterior_images_list = google_images(make, model)
 
 # -- DEBUG PRINT STATEMENTS --
 
@@ -268,5 +284,7 @@ print('Features Data:')
 print(feature_list)
 print('General Data: ')
 print(general_specs)
+print('Engine Data: ')
+print(engine_specs)
 print('Google Image results: ')
-print(exterior_list)
+print(exterior_images_list)
