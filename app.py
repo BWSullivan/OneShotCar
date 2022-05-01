@@ -6,6 +6,7 @@ from werkzeug.utils import secure_filename
 # import backend_file
 import carinfo
 
+history_list = []
 def create_app(test_config=None):
     make_name, model_name, years = "", "", ""
     # create and configure the app
@@ -91,6 +92,9 @@ def create_app(test_config=None):
     @app.route('/results')
     def results():
         make, model, first_year, last_year, prob= carinfo.carnet_ai()
+        this_history = "Make: " + make + " Model: "+ model + " Year: "+ first_year
+        history_list.append(this_history)
+
         if (make == "Unknown"):
             return render_template('pop_up_error.html')
         else:
@@ -108,6 +112,10 @@ def create_app(test_config=None):
             user_input_make = request.form['makeInput']
             user_input_model = request.form['modelInput']
             user_input_year = request.form['yearInput']
+
+            this_history = "Make: " + user_input_make + " Model: " + user_input_model + " Year: " + user_input_year
+            history_list.append(this_history)
+
             iprice = carinfo.get_google_result(user_input_make, user_input_model)
             otherModels = carinfo.get_other_models(user_input_make)
             itrims = carinfo.get_trims(user_input_make, user_input_model, user_input_year)
@@ -124,7 +132,7 @@ def create_app(test_config=None):
     #history page
     @app.route('/history')
     def history():
-        return render_template('history.html')
+        return render_template('history.html', my_history_list=history_list)
 
     #contact us page
     @app.route('/contact')
