@@ -1,6 +1,7 @@
 import requests
 import random
 
+IMG_DIR = ""
 
 # returns make, model, years_first, years_last
 def carnet_ai():
@@ -9,44 +10,48 @@ def carnet_ai():
     query_carnet = {'accept': 'application/json',
                     'api-key': API_KEY_carnet,
                     'Content-Type': 'application/octet-stream'}
-
     data = open(IMG_DIR, 'rb').read()
     response = requests.post(URL_carnet, headers=query_carnet, data=data)
     try:
         data = response.json()  # parsing json answer
         detection_dict = data['detections']
-        img_args = detection_dict[0]
-        amg = img_args['class']
-        probability = amg['probability'] * 100
+        if len(detection_dict) > 0:
+            img_args = detection_dict[0]
+            amg = img_args['class']
+            probability = amg['probability'] * 100
 
-        mmg = img_args['mmg']
-        answer_dict = mmg[0]
+            mmg = img_args['mmg']
+            if len(mmg) > 0:
+                answer_dict = mmg[0]
 
-        make_name = answer_dict['make_name']
-        # I have to hardcode stuff to get it through the other API's...
-        # this is a temporary solution... this is stupid... Too bad!:
-        if make_name == 'Mercedes-Benz':
-            make_name = 'Mercedes'
-        if make_name == 'MAZDA':
-            make_name = 'Mazda'
+                make_name = answer_dict['make_name']
 
-        # Some answers come in from API like this: Accord (North America)
-        # so to get rid of '(<location>)' we split as shown below.
-        # This works even if answer doesn't have location.
+                # I have to hardcode stuff to get it through the other API's...
+                # this is a temporary solution... this is stupid... Too bad!:
+                if make_name == 'Mercedes-Benz':
+                    make_name = 'Mercedes'
+                if make_name == 'MAZDA':
+                    make_name = 'Mazda'
 
-        model_name_location = answer_dict['model_name']
-        model_name_list = model_name_location.split('(')
-        model_name = model_name_list[0]  # throw away location
+            # Some answers come in from API like this: Accord (North America)
+            # so to get rid of '(<location>)' we split as shown below.
+            # This works even if answer doesn't have location.
 
+                model_name_location = answer_dict['model_name']
+                model_name_list = model_name_location.split('(')
+                model_name = model_name_list[0]  # throw away location
 
-        # years comes in from API like this: 1997 - 2018
-        years = answer_dict['years']
-        years_list = years.split('-')
-        years_first = years_list[0]
-        years_last = years_list[1]
+            # years comes in from API like this: 1997 - 2018
+                years = answer_dict['years']
+                years_list = years.split('-')
+                years_first = years_list[0]
+                years_last = years_list[1]
 
-        return make_name, model_name, years_first, years_last, probability
-
+                return make_name, model_name, years_first, years_last, probability
+            else:
+                return "Unknown", "Unknown", "Unknown", "Unknown", "Unknown" #case where API fails
+        elif len(detection_dict) == 0:
+            return "Unknown", "Unknown", "Unknown", "Unknown", "Unknown" #case where API fails
     except requests.exceptions.RequestException:
         print('error')
         print(response.text)
@@ -70,6 +75,7 @@ def get_google_result(make_name, model_name):
         return "MSRP not found! (msrp error)"
 
 
+
 # returns list of other models
 def get_other_models(make_name):  # done
     response_model = requests.get(url='https://carmakemodeldb.com/api/v1/car-lists/get/models/2022/' + make_name
@@ -80,7 +86,6 @@ def get_other_models(make_name):  # done
     for model in other_models:
         model_list.append(model['model'])
     return model_list
-
 
 # returns list of trims
 def get_trims(make_name, model_name, years_first):
@@ -115,6 +120,7 @@ def get_transmissions(make_name, model_name, years_first, list_trims):
             except TypeError:
                 print("None found!")
     return list_of_trans
+
 
 
 # returns make, model, year, trims formatted for the car_features function (IGNORE)
@@ -162,6 +168,7 @@ def carstockpile_api(make_stock, model_stock, years_first):
 
     # we can finally make requests!
     return make, best_model, years_first, final_trim
+
 
 
 # returns a list of features depending on option flag
@@ -228,6 +235,7 @@ def google_images(make_name, model_name):
     return results
 
 
+
 # -- KEYS and URLs --
 
 API_KEY_carnet = 'ec8de34a-4d87-44c5-b569-3482f7a12858'
@@ -240,55 +248,54 @@ API_KEY_stockpile = '0ccc64153emsh2befbe0a2bfcdd1p1ca214jsn646b219efe35'
 
 API_KEY_scraper = '465078331accb68e1ddb3184bc3b4a53'
 
-IMG_DIR = 'mee.jpg'  # to be changed to accomidate user upload
 
 # -- VARIABLES TO BE USED IN FRONTEND --
-
-make, model, years_first, years_last, probability = carnet_ai()
-
-msrp = get_google_result(make, model)
-
-other_models_by_make = get_other_models(make)
-
-all_trims = get_trims(make, model, years_first)
-
-all_trans = get_transmissions(make, model, years_first, all_trims)
-
-# ignore new_make, bestmod, caryear, finaltrim, they're local to the carfeatures() function
-new_make, bestmod, caryear, finaltrim = carstockpile_api(make, model, years_first)
-
-tire_list = car_features(new_make, bestmod, caryear, finaltrim, 1)
-
-feature_list = car_features(new_make, bestmod, caryear, finaltrim, 2)
-
-general_specs = car_features(new_make, bestmod, caryear, finaltrim, 3)
-
-engine_specs = car_features(new_make, bestmod, caryear, finaltrim, 4)
-
-exterior_images_list = google_images(make, model)
-
-# -- DEBUG PRINT STATEMENTS --
-
-print('Make: ' + make)
-print('Model: ' + model)
-print('Years First: ' + years_first)
-print('Years Last: ' + years_last)
-print('Probability: ')
-print(probability)
-print('MSRP: ' + msrp)
-print('Other models by make: ')
-print(other_models_by_make)
-print('Trims: ')
-print(all_trims)
-print('Trans: ')
-print(all_trans)
-print('Tire Data: ')
-print(tire_list)
-print('Features Data:')
-print(feature_list)
-print('General Data: ')
-print(general_specs)
-print('Engine Data: ')
-print(engine_specs)
-print('Google Image results: ')
-print(exterior_images_list)
+#
+# make, model, years_first, years_last, probability = carnet_ai()
+#
+# msrp = get_google_result(make, model)
+#
+# other_models_by_make = get_other_models(make)
+#
+# all_trims = get_trims(make, model, years_first)
+#
+# all_trans = get_transmissions(make, model, years_first, all_trims)
+#
+# # ignore new_make, bestmod, caryear, finaltrim, they're local to the carfeatures() function
+# new_make, bestmod, caryear, finaltrim = carstockpile_api(make, model, years_first)
+#
+# tire_list = car_features(new_make, bestmod, caryear, finaltrim, 1)
+#
+# feature_list = car_features(new_make, bestmod, caryear, finaltrim, 2)
+#
+# general_specs = car_features(new_make, bestmod, caryear, finaltrim, 3)
+#
+# engine_specs = car_features(new_make, bestmod, caryear, finaltrim, 4)
+#
+# exterior_images_list = google_images(make, model)
+#
+# # -- DEBUG PRINT STATEMENTS --
+#
+# print('Make: ' + make)
+# print('Model: ' + model)
+# print('Years First: ' + years_first)
+# print('Years Last: ' + years_last)
+# print('Probability: ')
+# print(probability)
+# print('MSRP: ' + msrp)
+# print('Other models by make: ')
+# print(other_models_by_make)
+# print('Trims: ')
+# print(all_trims)
+# print('Trans: ')
+# print(all_trans)
+# print('Tire Data: ')
+# print(tire_list)
+# print('Features Data:')
+# print(feature_list)
+# print('General Data: ')
+# print(general_specs)
+# print('Engine Data: ')
+# print(engine_specs)
+# print('Google Image results: ')
+# print(exterior_images_list)
