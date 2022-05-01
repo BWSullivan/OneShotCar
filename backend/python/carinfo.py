@@ -3,6 +3,7 @@ import random
 
 IMG_DIR = ""
 
+
 # returns make, model, years_first, years_last
 def carnet_ai():
     # -- Query according to documentation --
@@ -49,9 +50,9 @@ def carnet_ai():
 
                 return make_name, model_name, years_first, years_last, probability
             else:
-                return "Unknown", "Unknown", "Unknown", "Unknown", "Unknown" #case where API fails
+                return "Unknown", "Unknown", "Unknown", "Unknown", "Unknown"  # case where API fails
         elif len(detection_dict) == 0:
-            return "Unknown", "Unknown", "Unknown", "Unknown", "Unknown" #case where API fails
+            return "Unknown", "Unknown", "Unknown", "Unknown", "Unknown"  # case where API fails
     except requests.exceptions.RequestException:
         print('error')
         print(response.text)
@@ -75,7 +76,6 @@ def get_google_result(make_name, model_name):
         return "MSRP not found! (msrp error)"
 
 
-
 # returns list of other models
 def get_other_models(make_name):  # done
     response_model = requests.get(url='https://carmakemodeldb.com/api/v1/car-lists/get/models/2022/' + make_name
@@ -86,6 +86,7 @@ def get_other_models(make_name):  # done
     for model in other_models:
         model_list.append(model['model'])
     return model_list
+
 
 # returns list of trims
 def get_trims(make_name, model_name, years_first):
@@ -120,7 +121,6 @@ def get_transmissions(make_name, model_name, years_first, list_trims):
             except TypeError:
                 print("None found!")
     return list_of_trans
-
 
 
 # returns make, model, year, trims formatted for the car_features function (IGNORE)
@@ -170,13 +170,12 @@ def carstockpile_api(make_stock, model_stock, years_first):
     return make, best_model, years_first, final_trim
 
 
-
-# returns a list of features depending on option flag
+# returns a dictionary of features depending on option flag
 def car_features(make_stock, best_model, years_first, final_trim, option):
     if option == 1:
-        URL_stockpile_tire = 'https://car-stockpile.p.rapidapi.com/spec-chassis-wheel'
+        url_stockpile_tire = 'https://car-stockpile.p.rapidapi.com/spec-chassis-wheel'
 
-        response_stockpile = requests.get(url=URL_stockpile_tire,
+        response_stockpile = requests.get(url=url_stockpile_tire,
                                           params={'make': make_stock, 'model': best_model, 'year': years_first,
                                                   'trim': final_trim},
                                           headers={'X-RapidAPI-Host': 'car-stockpile.p.rapidapi.com',
@@ -186,9 +185,9 @@ def car_features(make_stock, best_model, years_first, final_trim, option):
 
     # -- FEATURES --
     elif option == 2:
-        URL_stockpile_features = 'https://car-stockpile.p.rapidapi.com/spec-features'
+        url_stockpile_features = 'https://car-stockpile.p.rapidapi.com/spec-features'
 
-        response_stockpile = requests.get(url=URL_stockpile_features,
+        response_stockpile = requests.get(url=url_stockpile_features,
                                           params={'make': make_stock, 'model': best_model, 'year': years_first,
                                                   'trim': final_trim},
                                           headers={'X-RapidAPI-Host': 'car-stockpile.p.rapidapi.com',
@@ -198,9 +197,9 @@ def car_features(make_stock, best_model, years_first, final_trim, option):
 
     # -- GENERAL SPECS --
     elif option == 3:
-        URL_stockpile_general = 'https://car-stockpile.p.rapidapi.com/spec-general'
+        url_stockpile_general = 'https://car-stockpile.p.rapidapi.com/spec-general'
 
-        response_stockpile = requests.get(url=URL_stockpile_general,
+        response_stockpile = requests.get(url=url_stockpile_general,
                                           params={'make': make_stock, 'model': best_model, 'year': years_first,
                                                   'trim': final_trim},
                                           headers={'X-RapidAPI-Host': 'car-stockpile.p.rapidapi.com',
@@ -209,9 +208,9 @@ def car_features(make_stock, best_model, years_first, final_trim, option):
         return raw_data
 
     elif option == 4:
-        URL_stockpile_general = 'https://car-stockpile.p.rapidapi.com/spec-fuel-engine'
+        url_stockpile_engine = 'https://car-stockpile.p.rapidapi.com/spec-fuel-engine'
 
-        response_stockpile = requests.get(url=URL_stockpile_general,
+        response_stockpile = requests.get(url=url_stockpile_engine,
                                           params={'make': make_stock, 'model': best_model, 'year': years_first,
                                                   'trim': final_trim},
                                           headers={'X-RapidAPI-Host': 'car-stockpile.p.rapidapi.com',
@@ -220,6 +219,7 @@ def car_features(make_stock, best_model, years_first, final_trim, option):
         return raw_data
 
 
+# returns a list of images in link format
 def google_images(make_name, model_name):
     engine = "google"
     q = make_name + model_name
@@ -227,13 +227,11 @@ def google_images(make_name, model_name):
     response_google = requests.get(url='https://serpapi.com/search.json'
                                        '?engine=' + engine + '&q=' + q + '&api_key=' + API_KEY_google + '&tbm=isch')
     googleanswer = response_google.json()['images_results']
-    results = []
-    results.append((googleanswer[0])['original'])
-    results.append((googleanswer[1])['original'])
-    results.append((googleanswer[2])['original'])
-    results.append((googleanswer[3])['original'])
+    results = [(googleanswer[0])['original'],
+               (googleanswer[1])['original'],
+               (googleanswer[2])['original'],
+               (googleanswer[3])['original']]
     return results
-
 
 
 # -- KEYS and URLs --
@@ -243,6 +241,8 @@ API_KEY_carnet = 'ec8de34a-4d87-44c5-b569-3482f7a12858'
 API_KEY_carinfo = 'haOKbNWT5dbmE1SAiFodnUbaMojtX75izMNdChLyulTuo3Ww1reCmA1CqEKR'
 
 API_KEY_google = '4be96181d5e32a353a8cb07555e2d6d85ac7809a90bdbdcbb1ff9cf37ab41968'
+# google_2 is used only when we run out of queries
+API_KEY_google_2 = '624fbf9642e60b7c2334b345bbce6195d977882a384816c3197e773f60ac2e93'
 
 API_KEY_stockpile = '0ccc64153emsh2befbe0a2bfcdd1p1ca214jsn646b219efe35'
 
