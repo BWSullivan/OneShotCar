@@ -209,7 +209,7 @@ API_KEY_google = '4be96181d5e32a353a8cb07555e2d6d85ac7809a90bdbdcbb1ff9cf37ab419
 
 API_KEY_stockpile = '0ccc64153emsh2befbe0a2bfcdd1p1ca214jsn646b219efe35'
 
-IMG_DIR = 'grand.jpg'
+IMG_DIR = ""
 
 # make
 # model
