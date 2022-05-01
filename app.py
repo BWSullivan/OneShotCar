@@ -48,7 +48,7 @@ def create_app(test_config=None):
     def getFilename(image):
         filename = secure_filename(image.filename)
         user_pic_name = os.path.join(app.config["IMAGE_UPLOADS"], filename)
-        carinfo.user_pic_name = user_pic_name
+        carinfo.IMG_DIR = user_pic_name
         return user_pic_name
 
     @app.route('/index', methods=["GET", "POST"])
