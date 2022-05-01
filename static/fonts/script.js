@@ -1,7 +1,7 @@
 /*QUICK JS SWITCHER
     Website does not run correctly on newly opened windows or incognito mode most likely due to cache memory or chrome settings. It only works when I click on the button that uses the JS file.
     Quick  JS Switcher refreshes the page so that this is not an issue.
-*/
+
 if (chromeContentSettings) {
 
   var extractHostname = new RegExp('^(?:f|ht)tp(?:s)?\://([^/]+)', 'im'),
@@ -66,7 +66,7 @@ if (chromeContentSettings) {
 } else {
   chrome.browserAction.onClicked.addListener(openJsPanel.call());
 }
-
+*/
 /*CSS TOGGLE THEME*/
 
 function toggleTheme() {
