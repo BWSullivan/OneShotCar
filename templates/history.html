@@ -66,6 +66,9 @@
     <header class="text-[#bd672a] text-6xl text-center my-6 font-extrabold" style="text-shadow: 1px 1px 2px black">Search History</header>
 
     <!-- search history -->
+    {%for i in range(0,my_history_list|length)%}
+                      <li class="text-2xl"> {{my_history_list[i]}} </li>
+                  {%endfor%}
     <script type="text/javascript" src="/static/fonts/script.js"></script>
 
 </body>
