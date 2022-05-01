@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OneShot Car</title>
-    <link href="/static/dist/output.css" rel="stylesheet" />
+    <link id="theme" href="/static/dist/output.css" rel="stylesheet" type="text/css" />
 </head>
 <body class="overflow-hidden">
   <div class="flex flex-row font-serif">
@@ -80,7 +80,7 @@
             <!-- toggle -->
             <div class="relative">
               <!-- input -->
-              <input type="checkbox" id="toggleB" class="sr-only">
+              <input type="checkbox" onclick="toggleTheme()" id="toggleB" class="sr-only">
               <!-- line -->
               <div class="block bg-[#bd672a] w-14 h-8 rounded-full"></div>
               <!-- dot -->
@@ -112,5 +112,7 @@
         </div>
     </div>
   </div>
+<script type="text/javascript" src="/static/fonts/script.js"></script>
+
 </body>
 </html>
