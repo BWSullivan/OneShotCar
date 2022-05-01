@@ -123,18 +123,18 @@ def get_transmissions(make_name, model_name, years_first, list_trims):
     return list_of_trans
 
 
-# returns make, model, year, trims formatted for the car_features function (IGNORE)
+# returns make, model, year, trims formatted for the car_features function (IGNORE, UNLESS USING CAR FEATURES!)
 def carstockpile_api(make_stock, model_stock, years_first):
     # get list of cars from API
     # my goal here is to get the API to maybe work in the best way possible
 
-    URL_stockpile = 'https://car-stockpile.p.rapidapi.com/models'
+    url_stockpile = 'https://car-stockpile.p.rapidapi.com/models'
 
     years_banned = ['2020', '2021', '2022']  # api only works up to 2019, will pull from the highest year
     if years_first in years_banned:
         years_first = '2019'
 
-    response_stockpile = requests.get(url=URL_stockpile,
+    response_stockpile = requests.get(url=url_stockpile,
                                       params={'make': make_stock},
                                       headers={'X-RapidAPI-Host': 'car-stockpile.p.rapidapi.com',
                                                'X-RapidAPI-Key': '0ccc64153emsh2befbe0a2bfcdd1p1ca214jsn646b219efe35'})
@@ -144,16 +144,15 @@ def carstockpile_api(make_stock, model_stock, years_first):
     model_stock = model_stock.rstrip()
     for model_chose in list_models:
         if model_chose == model_stock:  # if you found the model, choose it.
-            string_models = []
-            string_models.append(model_chose)
+            string_models = [model_chose]
             break
         if model_chose.find(model) != -1:  # if you don't, append the closest one.
             string_models.append(model_chose)
     best_model = string_models[0]  # index out of range
     # now have the same models as the model found in carnet API
 
-    URL_stockpile = 'https://car-stockpile.p.rapidapi.com/trims'
-    response_stockpile = requests.get(url=URL_stockpile,
+    url_stockpile = 'https://car-stockpile.p.rapidapi.com/trims'
+    response_stockpile = requests.get(url=url_stockpile,
                                       params={'make': make_stock, 'model': best_model, 'year': years_first},
                                       headers={'X-RapidAPI-Host': 'car-stockpile.p.rapidapi.com',
                                                'X-RapidAPI-Key': '0ccc64153emsh2befbe0a2bfcdd1p1ca214jsn646b219efe35'})
@@ -170,7 +169,7 @@ def carstockpile_api(make_stock, model_stock, years_first):
     return make, best_model, years_first, final_trim
 
 
-# returns a dictionary of features depending on option flag
+# returns a dictionary of features depending on option flag (REQUIRES car_stockpile())
 def car_features(make_stock, best_model, years_first, final_trim, option):
     if option == 1:
         url_stockpile_tire = 'https://car-stockpile.p.rapidapi.com/spec-chassis-wheel'
