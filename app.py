@@ -48,7 +48,7 @@ def create_app(test_config=None):
     def getFilename(image):
         filename = secure_filename(image.filename)
         user_pic_name = os.path.join(app.config["IMAGE_UPLOADS"], filename)
-        carinfo.IMG_DIR = user_pic_name
+        carinfo.user_pic_name = user_pic_name
         return user_pic_name
 
     @app.route('/index', methods=["GET", "POST"])
@@ -67,10 +67,8 @@ def create_app(test_config=None):
                 else:
                     filename = getFilename(image)
                     image.save(filename)
-                    #make_name, model_name, years = main.callAPI(filename)
                     print("Image saved!")
-
-                return redirect(request.url)
+                return redirect(url_for("results"))
         return render_template("index.html")
         
 
@@ -107,7 +105,6 @@ def create_app(test_config=None):
     #text search page
     @app.route('/search', methods=["POST", "GET"])
     def search():
-        textSearch = True
         if request.method == "POST":
             user_input_make = request.form['makeInput']
             user_input_model = request.form['modelInput']
