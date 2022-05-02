@@ -90,17 +90,30 @@ def create_app(test_config=None):
     @app.route('/results')
     def results():
         make, model, first_year, last_year, prob= carinfo.carnet_ai()
+        # make, model, first_year, last_year, prob = "Toyota", "Camry", 2001, 2002, 0.97
+        # new_make, bestmod, caryear, finaltrim = carinfo.carstockpile_api(make, model, first_year)
         this_history = "Make: " + make + " Model: "+ model + " Year: "+ first_year
-        history_list.append(this_history)
 
         if (make == "Unknown"):
             return render_template('pop_up_error.html')
         else:
+            history_list.append(this_history) #adding to history list
+            # model = "GranTurismo"
+
             iprice = carinfo.get_google_result(make, model)
             otherModels = carinfo.get_other_models(make)
             itrims = carinfo.get_trims(make, model, first_year)
             itransmissions = carinfo.get_transmissions(make, model, first_year, itrims)
-            return render_template('results_page.html', make_name=make, model_name=model, years=first_year, trims=itrims, transmissions=itransmissions, price=iprice, colors='tbc', safety='tbc', engine='tbc', infotainment='tbc', interior='tbc', other_models=otherModels, performance='tbc', safety_features='tbc', interior_features='tbc', comfort_features='tbc', performance_features='tbc')
+            # my_images = carinfo.google_images(make, model) //UNCOMMENT FOR FINAL WEBSITE
+            my_images = ['https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Maserati_GranTurismo_-_Flickr_-_exfordy_%281%29.jpg/1200px-Maserati_GranTurismo_-_Flickr_-_exfordy_%281%29.jpg', 'https://maserati.scene7.com/is/image/maserati/maserati/international/Models/default/2019/granturismo/versions/granturismo-sport.jpg?$1400x2000$&fit=constrain', 'https://cdn.motor1.com/images/mgl/nOKEG/s1/2022-maserati-granturismo-unofficial-renderings.jpg', 'https://www.motortrend.com/uploads/sites/10/2019/03/2018-maserati-gran-turismo-sport-convertible-angular-front.png']
+
+            #carstockpile additional features
+            # itire_list = carinfo.car_features(new_make, bestmod, caryear, finaltrim, 1)
+            # ifeature_list = carinfo.car_features(new_make, bestmod, caryear, finaltrim, 2)
+            # igeneral_specs = carinfo.car_features(new_make, bestmod, caryear, finaltrim, 3)
+            # iengine_specs = carinfo.car_features(new_make, bestmod, caryear, finaltrim, 4)
+
+            return render_template('results_page.html', make_name=make, model_name=model, years=first_year, trims=itrims, transmissions=itransmissions, price=iprice, carpictures=my_images ,generalspecs='igeneral_specs', enginespecs='iengine_specs', other_models=otherModels, featurelist='ifeature_list', tirelist='itire_list')
 
     #text search page
     @app.route('/search', methods=["POST", "GET"])
@@ -111,13 +124,23 @@ def create_app(test_config=None):
             user_input_year = request.form['yearInput']
 
             this_history = "Make: " + user_input_make + " Model: " + user_input_model + " Year: " + user_input_year
-            history_list.append(this_history)
+            history_list.append(this_history)  # adding to history list
 
             iprice = carinfo.get_google_result(user_input_make, user_input_model)
             otherModels = carinfo.get_other_models(user_input_make)
             itrims = carinfo.get_trims(user_input_make, user_input_model, user_input_year)
             itransmissions = carinfo.get_transmissions(user_input_make, user_input_model, user_input_year, itrims)
-            return render_template('results_page.html', make_name=user_input_make, model_name=user_input_model, years=user_input_year, trims=itrims, transmissions=itransmissions, price=iprice, colors='tbc', safety='tbc', engine='tbc', infotainment='tbc', interior='tbc', other_models=otherModels, performance='tbc', safety_features='tbc', interior_features='tbc', comfort_features='tbc', performance_features='tbc')
+
+            my_images = carinfo.google_images(user_input_make, user_input_model)
+
+            # carstockpile additional features
+            # new_make, bestmod, caryear, finaltrim = carinfo.carstockpile_api(user_input_make, user_input_model, user_input_year)
+            # itire_list = carinfo.car_features(new_make, bestmod, caryear, finaltrim, 1)
+            # ifeature_list = carinfo.car_features(new_make, bestmod, caryear, finaltrim, 2)
+            # igeneral_specs = carinfo.car_features(new_make, bestmod, caryear, finaltrim, 3)
+            # iengine_specs = carinfo.car_features(new_make, bestmod, caryear, finaltrim, 4)
+
+            return render_template('results_page.html', make_name=user_input_make, model_name=user_input_model, years=user_input_year, trims=itrims, transmissions=itransmissions, price=iprice, carpictures=my_images ,generalspecs='igeneral_specs', enginespecs='iengine_specs', other_models=otherModels, featurelist='ifeature_list', tirelist='itire_list')
         else:
             return render_template('search.html')
 
