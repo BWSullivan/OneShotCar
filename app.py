@@ -126,12 +126,15 @@ def create_app(test_config=None):
             this_history = "Make: " + user_input_make + " Model: " + user_input_model + " Year: " + user_input_year
             history_list.append(this_history)  # adding to history list
 
-            iprice = carinfo.get_google_result(user_input_make, user_input_model)
             otherModels = carinfo.get_other_models(user_input_make)
-            itrims = carinfo.get_trims(user_input_make, user_input_model, user_input_year)
-            itransmissions = carinfo.get_transmissions(user_input_make, user_input_model, user_input_year, itrims)
+            if len(otherModels) == 0:
+                return render_template('pop_up_error.html')
+            else:
+                iprice = carinfo.get_google_result(user_input_make, user_input_model)
+                itrims = carinfo.get_trims(user_input_make, user_input_model, user_input_year)
+                itransmissions = carinfo.get_transmissions(user_input_make, user_input_model, user_input_year, itrims)
 
-            my_images = carinfo.google_images(user_input_make, user_input_model)
+                my_images = carinfo.google_images(user_input_make, user_input_model)
 
             # carstockpile additional features
             # new_make, bestmod, caryear, finaltrim = carinfo.carstockpile_api(user_input_make, user_input_model, user_input_year)
@@ -140,7 +143,7 @@ def create_app(test_config=None):
             # igeneral_specs = carinfo.car_features(new_make, bestmod, caryear, finaltrim, 3)
             # iengine_specs = carinfo.car_features(new_make, bestmod, caryear, finaltrim, 4)
 
-            return render_template('results_page.html', make_name=user_input_make, model_name=user_input_model, years=user_input_year, trims=itrims, transmissions=itransmissions, price=iprice, carpictures=my_images ,generalspecs='igeneral_specs', enginespecs='iengine_specs', other_models=otherModels, featurelist='ifeature_list', tirelist='itire_list')
+                return render_template('results_page.html', make_name=user_input_make, model_name=user_input_model, years=user_input_year, trims=itrims, transmissions=itransmissions, price=iprice, carpictures=my_images ,generalspecs='igeneral_specs', enginespecs='iengine_specs', other_models=otherModels, featurelist='ifeature_list', tirelist='itire_list')
         else:
             return render_template('search.html')
 
