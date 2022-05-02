@@ -107,40 +107,44 @@ def create_app(test_config=None):
             #carstockpile additional features
             new_make, bestmod, caryear, finaltrim = carinfo.carstockpile_api(make, model, first_year)
 
-            # get and parse tire list
-            itire = carinfo.car_features(new_make, bestmod, caryear, finaltrim, 1)
-            itire_list = []
-            for key in itire:
-                temp_key = key.replace("_", "\n")
-                this_tire = temp_key + ': ' + itire[key]
-                # print(this_tire)
-                itire_list.append(this_tire.capitalize())
+            if (new_make != "Unknown"):
+                # get and parse tire list
+                itire = carinfo.car_features(new_make, bestmod, caryear, finaltrim, 1)
+                itire_list = []
+                for key in itire:
+                    temp_key = key.replace("_", "\n")
+                    this_tire = temp_key + ': ' + itire[key]
+                    itire_list.append(this_tire.capitalize())
 
-            ifeature = carinfo.car_features(new_make, bestmod, caryear, finaltrim, 2)
-            ifeature_list = []
-            for key in ifeature:
-                temp_key = key.replace("_", "\n")
-                this_feature = temp_key + ': ' + ifeature[key]
-                # print(this_feature)
-                ifeature_list.append(this_feature.capitalize())
+                ifeature = carinfo.car_features(new_make, bestmod, caryear, finaltrim, 2)
+                ifeature_list = []
+                for key in ifeature:
+                    temp_key = key.replace("_", "\n")
+                    this_feature = temp_key + ': ' + ifeature[key]
+                    ifeature_list.append(this_feature.capitalize())
 
-            igeneral = carinfo.car_features(new_make, bestmod, caryear, finaltrim, 3)
-            igeneral_specs = []
-            for key in igeneral:
-                temp_key = key.replace("_", "\n")
-                this_gen_spec = temp_key + ': ' + igeneral[key]
-                # print(this_gen_spec)
-                igeneral_specs.append(this_gen_spec.capitalize())
+                igeneral = carinfo.car_features(new_make, bestmod, caryear, finaltrim, 3)
+                igeneral_specs = []
+                for key in igeneral:
+                    temp_key = key.replace("_", "\n")
+                    this_gen_spec = temp_key + ': ' + igeneral[key]
+                    igeneral_specs.append(this_gen_spec.capitalize())
 
+                iengine = carinfo.car_features(new_make, bestmod, caryear, finaltrim, 4)
+                iengine_specs = []
+                for key in iengine:
+                    temp_key = key.replace("_", "\n")
+                    this_engine_spec = temp_key + ': ' + iengine[key]
+                    iengine_specs.append(this_engine_spec.capitalize())
 
-            iengine = carinfo.car_features(new_make, bestmod, caryear, finaltrim, 4)
-            iengine_specs = []
-            for key in iengine:
-                temp_key = key.replace("_", "\n")
-                this_engine_spec = temp_key + ': ' + iengine[key]
-                # print(this_engine_spec)
-                iengine_specs.append(this_engine_spec.capitalize())
-            return render_template('results_page.html', make_name=make, model_name=model, years=first_year, trims=itrims, transmissions=itransmissions, price=iprice, carpictures=my_images ,generalspecs=igeneral_specs, enginespecs=iengine_specs, other_models=otherModels, featurelist=ifeature_list, tirelist=itire_list)
+                return render_template('results_page.html', make_name=make, model_name=model, years=first_year, trims=itrims, transmissions=itransmissions, price=iprice, carpictures=my_images ,generalspecs=igeneral_specs, enginespecs=iengine_specs, other_models=otherModels, featurelist=ifeature_list, tirelist=itire_list)
+            else:
+                unavailable = []
+                unavailable.append("Unavailable Data")
+                return render_template('results_page.html', make_name=make, model_name=model, years=first_year,
+                                   trims=itrims, transmissions=itransmissions, price=iprice, carpictures=my_images,
+                                   generalspecs=unavailable, enginespecs=unavailable, other_models=otherModels,
+                                   featurelist=unavailable, tirelist=unavailable)
 
     #text search page
     @app.route('/search', methods=["POST", "GET"])
@@ -167,40 +171,50 @@ def create_app(test_config=None):
                 # carstockpile additional features
                 new_make, bestmod, caryear, finaltrim = carinfo.carstockpile_api(user_input_make, user_input_model, user_input_year)
 
-                # get and parse tire list
-                itire = carinfo.car_features(new_make, bestmod, caryear, finaltrim, 1)
-                itire_list = []
-                for key in itire:
-                    temp_key = key.replace("_", "\n")
-                    this_tire = temp_key + ': ' + itire[key]
-                    # print(this_tire)
-                    itire_list.append(this_tire.capitalize())
+                if (new_make != "Unknown"):
+                    # get and parse tire list
+                    itire = carinfo.car_features(new_make, bestmod, caryear, finaltrim, 1)
+                    itire_list = []
+                    for key in itire:
+                        temp_key = key.replace("_", "\n")
+                        this_tire = temp_key + ': ' + itire[key]
+                        itire_list.append(this_tire.capitalize())
 
-                ifeature = carinfo.car_features(new_make, bestmod, caryear, finaltrim, 2)
-                ifeature_list = []
-                for key in ifeature:
-                    temp_key = key.replace("_", "\n")
-                    this_feature = temp_key + ': ' + ifeature[key]
-                    # print(this_feature)
-                    ifeature_list.append(this_feature.capitalize())
+                    ifeature = carinfo.car_features(new_make, bestmod, caryear, finaltrim, 2)
+                    ifeature_list = []
+                    for key in ifeature:
+                        temp_key = key.replace("_", "\n")
+                        this_feature = temp_key + ': ' + ifeature[key]
+                        ifeature_list.append(this_feature.capitalize())
 
-                igeneral = carinfo.car_features(new_make, bestmod, caryear, finaltrim, 3)
-                igeneral_specs = []
-                for key in igeneral:
-                    temp_key = key.replace("_", "\n")
-                    this_gen_spec = temp_key + ': ' + igeneral[key]
-                    # print(this_gen_spec)
-                    igeneral_specs.append(this_gen_spec.capitalize())
+                    igeneral = carinfo.car_features(new_make, bestmod, caryear, finaltrim, 3)
+                    igeneral_specs = []
+                    for key in igeneral:
+                        temp_key = key.replace("_", "\n")
+                        this_gen_spec = temp_key + ': ' + igeneral[key]
+                        igeneral_specs.append(this_gen_spec.capitalize())
 
-                iengine = carinfo.car_features(new_make, bestmod, caryear, finaltrim, 4)
-                iengine_specs = []
-                for key in iengine:
-                    temp_key = key.replace("_", "\n")
-                    this_engine_spec = temp_key + ': ' + iengine[key]
-                    # print(this_engine_spec)
-                    iengine_specs.append(this_engine_spec.capitalize())
+                    iengine = carinfo.car_features(new_make, bestmod, caryear, finaltrim, 4)
+                    iengine_specs = []
+                    for key in iengine:
+                        temp_key = key.replace("_", "\n")
+                        this_engine_spec = temp_key + ': ' + iengine[key]
+                        iengine_specs.append(this_engine_spec.capitalize())
 
-                return render_template('results_page.html', make_name=user_input_make, model_name=user_input_model, years=user_input_year, trims=itrims, transmissions=itransmissions, price=iprice, carpictures=my_images ,generalspecs=igeneral_specs, enginespecs=iengine_specs, other_models=otherModels, featurelist=ifeature_list, tirelist=itire_list)
+                    return render_template('results_page.html', make_name=user_input_make, model_name=user_input_model,
+                                           years=user_input_year, trims=itrims, transmissions=itransmissions,
+                                           price=iprice, carpictures=my_images, generalspecs=igeneral_specs,
+                                           enginespecs=iengine_specs, other_models=otherModels,
+                                           featurelist=ifeature_list, tirelist=itire_list)
+                else:
+                    unavailable = []
+                    unavailable.append("Unavailable Data")
+                    return render_template('results_page.html', make_name=user_input_make, model_name=user_input_model,
+                                           years=user_input_year, trims=itrims, transmissions=itransmissions,
+                                           price=iprice, carpictures=my_images, generalspecs=unavailable,
+                                           enginespecs=unavailable, other_models=otherModels,
+                                           featurelist=unavailable, tirelist=unavailable)
+
         else:
             return render_template('search.html')
 
