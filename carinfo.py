@@ -2,6 +2,7 @@ import requests
 import random
 
 
+
 IMG_DIR = ""
 
 # returns make, model, years_first, years_last
@@ -141,7 +142,6 @@ def carstockpile_api(make_stock, model_stock, years_first):
                                                 'X-RapidAPI-Key': '0ccc64153emsh2befbe0a2bfcdd1p1ca214jsn646b219efe35'})
     try:
         raw_data = response_stockpile.json()
-        print(len(raw_data))
         list_models = (raw_data['models'])
         string_models = []
         model_stock = model_stock.rstrip()
@@ -161,6 +161,7 @@ def carstockpile_api(make_stock, model_stock, years_first):
                                       headers={'X-RapidAPI-Host': 'car-stockpile.p.rapidapi.com',
                                                'X-RapidAPI-Key': '0ccc64153emsh2befbe0a2bfcdd1p1ca214jsn646b219efe35'})
         raw_data = response_stockpile.json()
+
         list_trims = (raw_data['trims'])
         string_trim = []
 
@@ -171,7 +172,8 @@ def carstockpile_api(make_stock, model_stock, years_first):
 
     # we can finally make requests!
         return make_stock, best_model, years_first, final_trim
-    except requests.exceptions.JSONDecodeError:
+    except (requests.exceptions.JSONDecodeError, TypeError):
+        return "Unknown", "Unknown","Unknown","Unknown"
         print('error')
         print(response_stockpile.text)
 
@@ -179,52 +181,54 @@ def carstockpile_api(make_stock, model_stock, years_first):
 
 # returns a list of features depending on option flag
 def car_features(make_stock, best_model, years_first, final_trim, option):
-    if option == 1:
-        URL_stockpile_tire = 'https://car-stockpile.p.rapidapi.com/spec-chassis-wheel'
+    try:
+        if option == 1:
+            URL_stockpile_tire = 'https://car-stockpile.p.rapidapi.com/spec-chassis-wheel'
 
-        response_stockpile = requests.get(url=URL_stockpile_tire,
-                                          params={'make': make_stock, 'model': best_model, 'year': years_first,
-                                                  'trim': final_trim},
-                                          headers={'X-RapidAPI-Host': 'car-stockpile.p.rapidapi.com',
-                                                   'X-RapidAPI-Key': '0ccc64153emsh2befbe0a2bfcdd1p1ca214jsn646b219efe35'})
-        raw_data = response_stockpile.json()
-        return raw_data
+            response_stockpile = requests.get(url=URL_stockpile_tire,
+                                              params={'make': make_stock, 'model': best_model, 'year': years_first,
+                                                      'trim': final_trim},
+                                              headers={'X-RapidAPI-Host': 'car-stockpile.p.rapidapi.com',
+                                                       'X-RapidAPI-Key': '0ccc64153emsh2befbe0a2bfcdd1p1ca214jsn646b219efe35'})
+            raw_data = response_stockpile.json()
+            return raw_data
 
-    # -- FEATURES --
-    elif option == 2:
-        URL_stockpile_features = 'https://car-stockpile.p.rapidapi.com/spec-features'
+        # -- FEATURES --
+        elif option == 2:
+            URL_stockpile_features = 'https://car-stockpile.p.rapidapi.com/spec-features'
 
-        response_stockpile = requests.get(url=URL_stockpile_features,
-                                          params={'make': make_stock, 'model': best_model, 'year': years_first,
-                                                  'trim': final_trim},
-                                          headers={'X-RapidAPI-Host': 'car-stockpile.p.rapidapi.com',
-                                                   'X-RapidAPI-Key': '0ccc64153emsh2befbe0a2bfcdd1p1ca214jsn646b219efe35'})
-        raw_data = response_stockpile.json()
-        return raw_data
+            response_stockpile = requests.get(url=URL_stockpile_features,
+                                              params={'make': make_stock, 'model': best_model, 'year': years_first,
+                                                      'trim': final_trim},
+                                              headers={'X-RapidAPI-Host': 'car-stockpile.p.rapidapi.com',
+                                                       'X-RapidAPI-Key': '0ccc64153emsh2befbe0a2bfcdd1p1ca214jsn646b219efe35'})
+            raw_data = response_stockpile.json()
+            return raw_data
 
-    # -- GENERAL SPECS --
-    elif option == 3:
-        URL_stockpile_general = 'https://car-stockpile.p.rapidapi.com/spec-general'
+        # -- GENERAL SPECS --
+        elif option == 3:
+            URL_stockpile_general = 'https://car-stockpile.p.rapidapi.com/spec-general'
 
-        response_stockpile = requests.get(url=URL_stockpile_general,
-                                          params={'make': make_stock, 'model': best_model, 'year': years_first,
-                                                  'trim': final_trim},
-                                          headers={'X-RapidAPI-Host': 'car-stockpile.p.rapidapi.com',
-                                                   'X-RapidAPI-Key': '0ccc64153emsh2befbe0a2bfcdd1p1ca214jsn646b219efe35'})
-        raw_data = response_stockpile.json()
-        return raw_data
+            response_stockpile = requests.get(url=URL_stockpile_general,
+                                              params={'make': make_stock, 'model': best_model, 'year': years_first,
+                                                      'trim': final_trim},
+                                              headers={'X-RapidAPI-Host': 'car-stockpile.p.rapidapi.com',
+                                                       'X-RapidAPI-Key': '0ccc64153emsh2befbe0a2bfcdd1p1ca214jsn646b219efe35'})
+            raw_data = response_stockpile.json()
+            return raw_data
 
-    elif option == 4:
-        URL_stockpile_general = 'https://car-stockpile.p.rapidapi.com/spec-fuel-engine'
+        elif option == 4:
+            URL_stockpile_general = 'https://car-stockpile.p.rapidapi.com/spec-fuel-engine'
 
-        response_stockpile = requests.get(url=URL_stockpile_general,
-                                          params={'make': make_stock, 'model': best_model, 'year': years_first,
-                                                  'trim': final_trim},
-                                          headers={'X-RapidAPI-Host': 'car-stockpile.p.rapidapi.com',
-                                                   'X-RapidAPI-Key': '0ccc64153emsh2befbe0a2bfcdd1p1ca214jsn646b219efe35'})
-        raw_data = response_stockpile.json()
-        return raw_data
-
+            response_stockpile = requests.get(url=URL_stockpile_general,
+                                              params={'make': make_stock, 'model': best_model, 'year': years_first,
+                                                      'trim': final_trim},
+                                              headers={'X-RapidAPI-Host': 'car-stockpile.p.rapidapi.com',
+                                                       'X-RapidAPI-Key': '0ccc64153emsh2befbe0a2bfcdd1p1ca214jsn646b219efe35'})
+            raw_data = response_stockpile.json()
+            return raw_data
+    except TypeError:
+        print('typeError')
 
 def google_images(make_name, model_name):
     engine = "google"
