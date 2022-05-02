@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html class="scroll-smooth" >
 <head>
   <title>Search Results</title>
     <link id="theme" href="/static/dist/output.css" rel="stylesheet" type="text/css" />
@@ -69,14 +69,23 @@
       </div>
     </div>
 
+
     <!-- page contents -->
     <header class="text-[#bd672a] text-5xl text-center my-6 font-extrabold" style="text-shadow: 1px 1px 2px black">We found the car you were searching for!</header>
 
+    <!--car pictures-->
+    <div class="grid grid-cols-2 gap-4 mx-9">
+              {%for i in range(0,carpictures|length)%}
+                     <div>  <img src={{carpictures[i]}} alt="Car Pictures">  </div>
+              {%endfor%}
+    </div>
+
     <!-- basic features -->
     <div class="my-6">
-        <h1 class=" text-[#bd672a] font-extrabold text-center text-3xl leading-loose gap-y-6">Basic Info</h1>
+        <h1 class=" text-[#bd672a] font-extrabold text-left text-3xl leading-loose gap-y-6">Basic Info</h1>
     
         <div class="grid grid-cols-2 gap-3 mx-20">
+
           <!-- main features -->
           <div>
               <h2 class="font-bold text-3xl">Main Features</h2>
@@ -112,7 +121,7 @@
 
     <!-- more features -->
     <div class="mt-6">
-        <h1 class=" text-[#bd672a] font-extrabold text-center text-3xl leading-loose gap-y-6">More Features Below...</h1>
+        <h1 class=" text-[#bd672a] font-extrabold text-left text-3xl leading-loose gap-y-6">More Features Below...</h1>
     
         <div class="grid grid-cols-2 gap-3 mx-20">
           <!-- trims -->
@@ -123,8 +132,8 @@
                       <li class="text-2xl"> {{trims[i]}} </li>
                   {%endfor%}
               </ul>
-<!--                <p class="text-2xl">{{trims}}</p>-->
           </div>
+
           <!-- transmissions -->
           <div>
               <h2 class="font-bold text-3xl">Transmissions</h2>
@@ -149,10 +158,46 @@
 <!--                <p class="text-2xl">{{other_models[0]}}</p>-->
           </div>
           <!-- replace -->
+<!--            general specs-->
           <div>
-              <h2 class="font-bold text-3xl">Infotainment</h2>
-              <p class="text-2xl">{{infotainment}}</p>
+              <h2 class="font-bold text-3xl">General Specs</h2>
+              <ul>
+                  {%for i in range(0,generalspecs|length)%}
+                      <li class="text-2xl"> {{generalspecs[i]}} </li>
+                  {%endfor%}
+              </ul>
           </div>
+
+<!--            engine specs-->
+            <div>
+              <h2 class="font-bold text-3xl">Engine Specs</h2>
+              <ul>
+                  {%for i in range(0,enginespecs|length)%}
+                      <li class="text-2xl"> {{enginespecs[i]}} </li>
+                  {%endfor%}
+              </ul>
+          </div>
+
+<!--            tire list-->
+            <div>
+              <h2 class="font-bold text-3xl">Tire Specs</h2>
+              <ul>
+                  {%for i in range(0,tirelist|length)%}
+                      <li class="text-2xl"> {{tirelist[i]}} </li>
+                  {%endfor%}
+              </ul>
+          </div>
+
+<!--            features list-->
+              <div>
+              <h2 class="font-bold text-3xl">Features List</h2>
+              <ul>
+                  {%for i in range(0,featurelist|length)%}
+                      <li class="text-2xl"> {{featurelist[i]}} </li>
+                  {%endfor%}
+              </ul>
+          </div>
+
         </div>
     </div>
 <script type="text/javascript" src="/static/fonts/script.js"></script>
