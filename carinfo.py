@@ -1,6 +1,7 @@
 import requests
 import random
 
+
 IMG_DIR = ""
 
 # returns make, model, years_first, years_last
@@ -68,11 +69,11 @@ def get_google_result(make_name, model_name):
     try:
         knowledge = googleanswer['knowledge_graph']
     except KeyError:
-        return "MSRP not found! (knowledge_graph error)"
+        return "MSRP not found!"
     try:
         return knowledge['msrp']
     except KeyError:
-        return "MSRP not found! (msrp error)"
+        return "MSRP not found!"
 
 
 
@@ -135,39 +136,44 @@ def carstockpile_api(make_stock, model_stock, years_first):
         years_first = '2019'
 
     response_stockpile = requests.get(url=URL_stockpile,
-                                      params={'make': make_stock},
-                                      headers={'X-RapidAPI-Host': 'car-stockpile.p.rapidapi.com',
-                                               'X-RapidAPI-Key': '0ccc64153emsh2befbe0a2bfcdd1p1ca214jsn646b219efe35'})
-    raw_data = response_stockpile.json()
-    list_models = (raw_data['models'])
-    string_models = []
-    model_stock = model_stock.rstrip()
-    for model_chose in list_models:
-        if model_chose == model_stock:  # if you found the model, choose it.
-            string_models = []
-            string_models.append(model_chose)
-            break
-        if model_chose.find(model) != -1:  # if you don't, append the closest one.
-            string_models.append(model_chose)
-    best_model = string_models[0]  # index out of range
+                                        params={'make': make_stock},
+                                        headers={'X-RapidAPI-Host': 'car-stockpile.p.rapidapi.com',
+                                                'X-RapidAPI-Key': '0ccc64153emsh2befbe0a2bfcdd1p1ca214jsn646b219efe35'})
+    try:
+        raw_data = response_stockpile.json()
+        print(len(raw_data))
+        list_models = (raw_data['models'])
+        string_models = []
+        model_stock = model_stock.rstrip()
+        for model_chose in list_models:
+            if model_chose == model_stock:  # if you found the model, choose it.
+                string_models = []
+                string_models.append(model_chose)
+                break
+            if model_chose.find(model_stock) != -1:  # if you don't, append the closest one.
+                string_models.append(model_chose)
+        best_model = string_models[0]  # index out of range
     # now have the same models as the model found in carnet API
 
-    URL_stockpile = 'https://car-stockpile.p.rapidapi.com/trims'
-    response_stockpile = requests.get(url=URL_stockpile,
+        URL_stockpile = 'https://car-stockpile.p.rapidapi.com/trims'
+        response_stockpile = requests.get(url=URL_stockpile,
                                       params={'make': make_stock, 'model': best_model, 'year': years_first},
                                       headers={'X-RapidAPI-Host': 'car-stockpile.p.rapidapi.com',
                                                'X-RapidAPI-Key': '0ccc64153emsh2befbe0a2bfcdd1p1ca214jsn646b219efe35'})
-    raw_data = response_stockpile.json()
-    list_trims = (raw_data['trims'])
-    string_trim = []
+        raw_data = response_stockpile.json()
+        list_trims = (raw_data['trims'])
+        string_trim = []
 
-    for trim in list_trims:
-        string_trim.append(trim['trim'])
+        for trim in list_trims:
+            string_trim.append(trim['trim'])
 
-    final_trim = string_trim[random.randint(0, len(string_trim) - 1)]
+        final_trim = string_trim[random.randint(0, len(string_trim) - 1)]
 
     # we can finally make requests!
-    return make, best_model, years_first, final_trim
+        return make_stock, best_model, years_first, final_trim
+    except requests.exceptions.JSONDecodeError:
+        print('error')
+        print(response_stockpile.text)
 
 
 
@@ -252,30 +258,33 @@ API_KEY_scraper = '465078331accb68e1ddb3184bc3b4a53'
 # -- VARIABLES TO BE USED IN FRONTEND --
 #
 # make, model, years_first, years_last, probability = carnet_ai()
-#
+# #
 # msrp = get_google_result(make, model)
-#
+# #
 # other_models_by_make = get_other_models(make)
-#
+# #
 # all_trims = get_trims(make, model, years_first)
-#
+# #
 # all_trans = get_transmissions(make, model, years_first, all_trims)
+# #
 #
-# # ignore new_make, bestmod, caryear, finaltrim, they're local to the carfeatures() function
+#
+#
+# # # ignore new_make, bestmod, caryear, finaltrim, they're local to the carfeatures() function
 # new_make, bestmod, caryear, finaltrim = carstockpile_api(make, model, years_first)
-#
+# #
 # tire_list = car_features(new_make, bestmod, caryear, finaltrim, 1)
-#
+# #
 # feature_list = car_features(new_make, bestmod, caryear, finaltrim, 2)
-#
+# #
 # general_specs = car_features(new_make, bestmod, caryear, finaltrim, 3)
-#
+# #
 # engine_specs = car_features(new_make, bestmod, caryear, finaltrim, 4)
-#
-# exterior_images_list = google_images(make, model)
-#
-# # -- DEBUG PRINT STATEMENTS --
-#
+# #
+# # exterior_images_list = google_images(make, model)
+# #
+# # # -- DEBUG PRINT STATEMENTS --
+# #
 # print('Make: ' + make)
 # print('Model: ' + model)
 # print('Years First: ' + years_first)
@@ -297,5 +306,5 @@ API_KEY_scraper = '465078331accb68e1ddb3184bc3b4a53'
 # print(general_specs)
 # print('Engine Data: ')
 # print(engine_specs)
-# print('Google Image results: ')
-# print(exterior_images_list)
+# # print('Google Image results: ')
+# # print(exterior_images_list)
