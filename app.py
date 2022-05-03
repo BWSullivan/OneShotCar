@@ -14,7 +14,7 @@ def create_app(test_config=None):
     make_name, model_name, years = "", "", ""
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
-    server = app.server
+    
     app.config.from_mapping(
         SECRET_KEY='dev',
         DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
