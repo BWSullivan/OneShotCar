@@ -7,6 +7,8 @@ from werkzeug.utils import secure_filename
 import carinfo
 
 history_list = []
+history_images = []
+
 def create_app(test_config=None):
     make_name, model_name, years = "", "", ""
     # create and configure the app
@@ -90,7 +92,7 @@ def create_app(test_config=None):
     @app.route('/results')
     def results():
         make, model, first_year, last_year, prob= carinfo.carnet_ai()
-        this_history = "Make: " + make + " Model: "+ model + " Year: "+ first_year
+        this_history = first_year + " " + make + " " + model
 
         if (make == "Unknown"):
             return render_template('pop_up_error.html')
@@ -101,8 +103,10 @@ def create_app(test_config=None):
             otherModels = carinfo.get_other_models(make)
             itrims = carinfo.get_trims(make, model, first_year)
             itransmissions = carinfo.get_transmissions(make, model, first_year, itrims)
-            # my_images = carinfo.google_images(make, model) //UNCOMMENT FOR FINAL WEBSITE
-            my_images = ['https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Maserati_GranTurismo_-_Flickr_-_exfordy_%281%29.jpg/1200px-Maserati_GranTurismo_-_Flickr_-_exfordy_%281%29.jpg', 'https://maserati.scene7.com/is/image/maserati/maserati/international/Models/default/2019/granturismo/versions/granturismo-sport.jpg?$1400x2000$&fit=constrain', 'https://cdn.motor1.com/images/mgl/nOKEG/s1/2022-maserati-granturismo-unofficial-renderings.jpg', 'https://www.motortrend.com/uploads/sites/10/2019/03/2018-maserati-gran-turismo-sport-convertible-angular-front.png']
+            my_images = carinfo.google_images(make, model) #UNCOMMENT FOR FINAL WEBSITE
+            # my_images = ['https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Maserati_GranTurismo_-_Flickr_-_exfordy_%281%29.jpg/1200px-Maserati_GranTurismo_-_Flickr_-_exfordy_%281%29.jpg', 'https://maserati.scene7.com/is/image/maserati/maserati/international/Models/default/2019/granturismo/versions/granturismo-sport.jpg?$1400x2000$&fit=constrain', 'https://cdn.motor1.com/images/mgl/nOKEG/s1/2022-maserati-granturismo-unofficial-renderings.jpg', 'https://www.motortrend.com/uploads/sites/10/2019/03/2018-maserati-gran-turismo-sport-convertible-angular-front.png']
+            history_images.append(my_images[0])
+
 
             #carstockpile additional features
             new_make, bestmod, caryear, finaltrim = carinfo.carstockpile_api(make, model, first_year)
@@ -154,7 +158,7 @@ def create_app(test_config=None):
             user_input_model = request.form['modelInput']
             user_input_year = request.form['yearInput']
 
-            this_history = "Make: " + user_input_make + " Model: " + user_input_model + " Year: " + user_input_year
+            this_history = user_input_year +" "+ user_input_make +" "+ user_input_model
             history_list.append(this_history)  # adding to history list
 
             otherModels = carinfo.get_other_models(user_input_make)
@@ -167,6 +171,12 @@ def create_app(test_config=None):
                 itransmissions = carinfo.get_transmissions(user_input_make, user_input_model, user_input_year, itrims)
 
                 my_images = carinfo.google_images(user_input_make, user_input_model)
+                # my_images = [
+                #     'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Maserati_GranTurismo_-_Flickr_-_exfordy_%281%29.jpg/1200px-Maserati_GranTurismo_-_Flickr_-_exfordy_%281%29.jpg',
+                #     'https://maserati.scene7.com/is/image/maserati/maserati/international/Models/default/2019/granturismo/versions/granturismo-sport.jpg?$1400x2000$&fit=constrain',
+                #     'https://cdn.motor1.com/images/mgl/nOKEG/s1/2022-maserati-granturismo-unofficial-renderings.jpg',
+                #     'https://www.motortrend.com/uploads/sites/10/2019/03/2018-maserati-gran-turismo-sport-convertible-angular-front.png']
+                history_images.append(my_images[0])
 
                 # carstockpile additional features
                 new_make, bestmod, caryear, finaltrim = carinfo.carstockpile_api(user_input_make, user_input_model, user_input_year)
@@ -226,7 +236,7 @@ def create_app(test_config=None):
     #history page
     @app.route('/history')
     def history():
-        return render_template('history.html', my_history_list=history_list)
+        return render_template('history.html', my_history_list=history_list, my_history_images=history_images)
 
     #contact us page
     @app.route('/contact')
