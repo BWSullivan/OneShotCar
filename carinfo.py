@@ -70,11 +70,11 @@ def get_google_result(make_name, model_name):
     try:
         knowledge = googleanswer['knowledge_graph']
     except KeyError:
-        return "MSRP not found!"
+        return "Price not found!"
     try:
         return knowledge['msrp']
     except KeyError:
-        return "MSRP not found!"
+        return "Price not found!"
 
 
 
