@@ -235,7 +235,7 @@ def google_images(make_name, model_name):
     q = make_name + model_name
 
     response_google = requests.get(url='https://serpapi.com/search.json'
-                                       '?engine=' + engine + '&q=' + q + '&api_key=' + API_KEY_google + '&tbm=isch')
+                                       '?engine=' + engine + '&q=' + q + '&api_key=' + API_KEY_google_2 + '&tbm=isch')
     googleanswer = response_google.json()['images_results']
     results = []
     results.append((googleanswer[0])['original'])
@@ -257,6 +257,9 @@ API_KEY_google = '4be96181d5e32a353a8cb07555e2d6d85ac7809a90bdbdcbb1ff9cf37ab419
 API_KEY_stockpile = '0ccc64153emsh2befbe0a2bfcdd1p1ca214jsn646b219efe35'
 
 API_KEY_scraper = '465078331accb68e1ddb3184bc3b4a53'
+
+API_KEY_google_2 = '624fbf9642e60b7c2334b345bbce6195d977882a384816c3197e773f60ac2e93'
+
 
 
 # -- VARIABLES TO BE USED IN FRONTEND --
