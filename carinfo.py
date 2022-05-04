@@ -65,7 +65,7 @@ def get_google_result(make_name, model_name):
     q = make_name + model_name + "MSRP"
 
     response_google = requests.get(url='https://serpapi.com/search.json'
-                                       '?engine=' + engine + '&q=' + q + '&api_key=' + API_KEY_google + '&gl=us')
+                                       '?engine=' + engine + '&q=' + q + '&api_key=' + API_KEY_google_3 + '&gl=us')
     googleanswer = response_google.json()
     try:
         knowledge = googleanswer['knowledge_graph']
@@ -235,7 +235,7 @@ def google_images(make_name, model_name):
     q = make_name + model_name
 
     response_google = requests.get(url='https://serpapi.com/search.json'
-                                       '?engine=' + engine + '&q=' + q + '&api_key=' + API_KEY_google_2 + '&tbm=isch')
+                                       '?engine=' + engine + '&q=' + q + '&api_key=' + API_KEY_google_3 + '&tbm=isch')
     googleanswer = response_google.json()['images_results']
     results = []
     results.append((googleanswer[0])['original'])
@@ -259,6 +259,8 @@ API_KEY_stockpile = 'a0e96a2515mshbc8e69f3ec87373p1b1b61jsn4dc5a4a181f9'
 API_KEY_scraper = '465078331accb68e1ddb3184bc3b4a53'
 
 API_KEY_google_2 = '624fbf9642e60b7c2334b345bbce6195d977882a384816c3197e773f60ac2e93'
+
+API_KEY_google_3 = 'de9409dd2f1603562e190a37c8c2ebcbfb100c5c1c894affe4254874574ff276'
 
 
 
