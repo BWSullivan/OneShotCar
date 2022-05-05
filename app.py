@@ -164,6 +164,10 @@ def create_app(test_config=None):
             user_input_make = request.form['makeInput']
             user_input_model = request.form['modelInput']
             user_input_year = request.form['yearInput']
+            carinfo.city = request.form['cityInput']
+            print(carinfo.city)
+            carinfo.state = request.form['stateInput']
+            print(carinfo.state)
 
             this_history = user_input_year + " " + user_input_make + " " + user_input_model
             history_list.append(this_history)  # adding to history list
@@ -185,9 +189,19 @@ def create_app(test_config=None):
                 #     'https://www.motortrend.com/uploads/sites/10/2019/03/2018-maserati-gran-turismo-sport-convertible-angular-front.png']
                 history_images.append(my_images[0])
 
+                # location stuff
+
+                igoogle_results = carinfo.get_google_location_websites(user_input_make, user_input_model, carinfo.city, carinfo.state)
+                print(igoogle_results)
+                if igoogle_results == "Location not found!":
+                    igoogle_results.clear()
+                    igoogle_results.append("Data Unavailable")
+                    igoogle_results.append("Data Unavailable")
+                    igoogle_results.append("No Website Available")
+                    igoogle_results.append("No Directions Available")
+
                 # carstockpile additional features
-                new_make, bestmod, caryear, finaltrim = carinfo.carstockpile_api(user_input_make, user_input_model,
-                                                                                 user_input_year)
+                new_make, bestmod, caryear, finaltrim = carinfo.carstockpile_api(user_input_make, user_input_model, user_input_year)
 
                 if (new_make != "Unknown"):
                     # get and parse tire list
@@ -219,19 +233,20 @@ def create_app(test_config=None):
                         this_engine_spec = temp_key + ': ' + iengine[key]
                         iengine_specs.append(this_engine_spec.capitalize())
 
-                    return render_template('results_page.html', make_name=user_input_make, model_name=user_input_model,
+                    return render_template('google_results.html', make_name=user_input_make, model_name=user_input_model,
                                            years=user_input_year, trims=itrims, transmissions=itransmissions,
                                            price=iprice, carpictures=my_images, generalspecs=igeneral_specs,
                                            enginespecs=iengine_specs, other_models=otherModels,
-                                           featurelist=ifeature_list, tirelist=itire_list)
+                                           featurelist=ifeature_list, tirelist=itire_list, my_google_results=igoogle_results )
                 else:
                     unavailable = []
                     unavailable.append("Unavailable Data")
-                    return render_template('results_page.html', make_name=user_input_make, model_name=user_input_model,
+                    return render_template('google_results.html', make_name=user_input_make, model_name=user_input_model,
                                            years=user_input_year, trims=itrims, transmissions=itransmissions,
                                            price=iprice, carpictures=my_images, generalspecs=unavailable,
                                            enginespecs=unavailable, other_models=otherModels,
-                                           featurelist=unavailable, tirelist=unavailable)
+                                           featurelist=unavailable, tirelist=unavailable, my_google_results=igoogle_results)
+
 
         else:
             return render_template('search.html')
