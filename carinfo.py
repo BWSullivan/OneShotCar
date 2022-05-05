@@ -4,6 +4,8 @@ import random
 
 
 IMG_DIR = ""
+city = ""
+state = ""
 
 # returns make, model, years_first, years_last
 def carnet_ai():
@@ -77,6 +79,91 @@ def get_google_result(make_name, model_name):
         return "Price not found!"
 
 
+# def get_google_locations(make_name, model_name, city):
+#     engine = "google"
+#     q = make_name + model_name + "near me"
+#
+#     response_google_location = requests.get(url='https://serpapi.com/locations.json?q=' + city + '&limit=5')
+#     location_answer = response_google_location.json()
+#     print(location_answer)
+#     try:
+#         location = location_answer[1]
+#         id = location['id']
+#         print(id)
+#     except KeyError:
+#         # print("Location not found")
+#         return "Location not found!"
+
+    # response_google = requests.get(url='https://serpapi.com/search.json'
+    #     #                                    '?engine=' + engine + '&q=' + q + '&api_key=' + API_KEY_google + '&gl=us')
+    #     #
+    #     # googleanswer = response_google.json()
+    # try:
+
+def get_google_location_websites(make_name, model_name, city, state):
+    engine = "google"
+    q = make_name+ '+' + model_name+ '+' + "near+me&location="+ city+ "%2C"+state + "%2C+United+States&hl=en&gl=us&google_domain=google.com"
+    # print(q)
+    response_google_location = requests.get(url='https://serpapi.com/search.json'
+                                       + '?q=' + q + '&api_key=' + API_KEY_google_3 )
+    location_answer = response_google_location.json()
+    # print("location answer: ")
+    # print(location_answer)
+    try:
+        location = location_answer['local_results']
+        # print("local_results: ")
+        # print(location)
+    except KeyError:
+        return "Location not found!"
+    try:
+        places = location['places']
+        # print("places: ")
+        # print(places)
+
+        results = []
+        # results.append(len(places))
+        # temp = 0
+        for i in range(len(places)):
+
+            loc_details = places[i]
+            try:
+                loc_name = loc_details['title']
+                results.append(loc_name)
+                # temp = temp + 1
+            except:
+                results.append("Data Unavailable")
+                continue
+
+            try:
+                loc_hours =loc_details['hours']
+                results.append(loc_hours)
+                # temp = temp + 1
+
+            except:
+                results.append("Data Unavailable")
+                continue
+            try:
+                loc_links = loc_details['links']
+                loc_web, loc_directions = loc_links['website'], loc_links['directions']
+                results.append(loc_web)
+                results.append(loc_directions)
+                # temp = temp + 2
+            except:
+                results.append("Data Unavailable")
+                results.append("Data Unavailable")
+                continue
+        # results.append(temp)
+        # print("results: ")
+        # print(results)
+        return results
+    except KeyError:
+        results = []
+        results.append(0)
+        results.append("Location not found!")
+        results.append(0)
+        return results
+
+
 
 # returns list of other models
 def get_other_models(make_name):  # done
@@ -139,7 +226,7 @@ def carstockpile_api(make_stock, model_stock, years_first):
     response_stockpile = requests.get(url=URL_stockpile,
                                         params={'make': make_stock},
                                         headers={'X-RapidAPI-Host': 'car-stockpile.p.rapidapi.com',
-                                                'X-RapidAPI-Key': '0ccc64153emsh2befbe0a2bfcdd1p1ca214jsn646b219efe35'})
+                                                'X-RapidAPI-Key': 'a0e96a2515mshbc8e69f3ec87373p1b1b61jsn4dc5a4a181f9'})
     try:
         raw_data = response_stockpile.json()
         list_models = (raw_data['models'])
@@ -159,7 +246,7 @@ def carstockpile_api(make_stock, model_stock, years_first):
         response_stockpile = requests.get(url=URL_stockpile,
                                       params={'make': make_stock, 'model': best_model, 'year': years_first},
                                       headers={'X-RapidAPI-Host': 'car-stockpile.p.rapidapi.com',
-                                               'X-RapidAPI-Key': '0ccc64153emsh2befbe0a2bfcdd1p1ca214jsn646b219efe35'})
+                                               'X-RapidAPI-Key': 'a0e96a2515mshbc8e69f3ec87373p1b1b61jsn4dc5a4a181f9'})
         raw_data = response_stockpile.json()
 
         list_trims = (raw_data['trims'])
@@ -189,7 +276,7 @@ def car_features(make_stock, best_model, years_first, final_trim, option):
                                               params={'make': make_stock, 'model': best_model, 'year': years_first,
                                                       'trim': final_trim},
                                               headers={'X-RapidAPI-Host': 'car-stockpile.p.rapidapi.com',
-                                                       'X-RapidAPI-Key': '0ccc64153emsh2befbe0a2bfcdd1p1ca214jsn646b219efe35'})
+                                                       'X-RapidAPI-Key': 'a0e96a2515mshbc8e69f3ec87373p1b1b61jsn4dc5a4a181f9'})
             raw_data = response_stockpile.json()
             return raw_data
 
@@ -201,7 +288,7 @@ def car_features(make_stock, best_model, years_first, final_trim, option):
                                               params={'make': make_stock, 'model': best_model, 'year': years_first,
                                                       'trim': final_trim},
                                               headers={'X-RapidAPI-Host': 'car-stockpile.p.rapidapi.com',
-                                                       'X-RapidAPI-Key': '0ccc64153emsh2befbe0a2bfcdd1p1ca214jsn646b219efe35'})
+                                                       'X-RapidAPI-Key': 'a0e96a2515mshbc8e69f3ec87373p1b1b61jsn4dc5a4a181f9'})
             raw_data = response_stockpile.json()
             return raw_data
 
@@ -213,7 +300,7 @@ def car_features(make_stock, best_model, years_first, final_trim, option):
                                               params={'make': make_stock, 'model': best_model, 'year': years_first,
                                                       'trim': final_trim},
                                               headers={'X-RapidAPI-Host': 'car-stockpile.p.rapidapi.com',
-                                                       'X-RapidAPI-Key': '0ccc64153emsh2befbe0a2bfcdd1p1ca214jsn646b219efe35'})
+                                                       'X-RapidAPI-Key': 'a0e96a2515mshbc8e69f3ec87373p1b1b61jsn4dc5a4a181f9'})
             raw_data = response_stockpile.json()
             return raw_data
 
@@ -224,11 +311,11 @@ def car_features(make_stock, best_model, years_first, final_trim, option):
                                               params={'make': make_stock, 'model': best_model, 'year': years_first,
                                                       'trim': final_trim},
                                               headers={'X-RapidAPI-Host': 'car-stockpile.p.rapidapi.com',
-                                                       'X-RapidAPI-Key': '0ccc64153emsh2befbe0a2bfcdd1p1ca214jsn646b219efe35'})
+                                                       'X-RapidAPI-Key': 'a0e96a2515mshbc8e69f3ec87373p1b1b61jsn4dc5a4a181f9'})
             raw_data = response_stockpile.json()
             return raw_data
     except TypeError:
-        print('typeError')
+        print('TypeError')
 
 def google_images(make_name, model_name):
     engine = "google"
@@ -260,10 +347,17 @@ API_KEY_scraper = '465078331accb68e1ddb3184bc3b4a53'
 
 API_KEY_google_2 = '624fbf9642e60b7c2334b345bbce6195d977882a384816c3197e773f60ac2e93'
 
-API_KEY_google_3 = 'de9409dd2f1603562e190a37c8c2ebcbfb100c5c1c894affe4254874574ff276'
+API_KEY_google_3 = 'fed60ad4c45b95266b082ecd77e7fc361dfbac907dd37c1bf6d23bb0a7416521' #26
+
+API_KEY_google_4 = '565a0c5085ccd3dddd7d8464c2ff4349b9d432d4572693a8ee848df01c53404a' #19
+
+API_KEY_google_5 = '2e9b13dda90f8130fc810aa286e292f7a919ec4df9b3aa2db3739e5e4c21a51b'
+# gotWebsites = get_google_location_websites("Toyota", "Camry", "Austin", "Texas")
+# print(gotWebsites)
 
 
-
+# gotPrice = get_google_result("Toyota", "Camry")
+# print(gotPrice)
 # -- VARIABLES TO BE USED IN FRONTEND --
 #
 # make, model, years_first, years_last, probability = carnet_ai()
