@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" >
+<head>
+  <title>Search Results</title>
+    <link id="theme" href="/static/dist/output.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://unpkg.com/flowbite@1.4.4/dist/flowbite.min.css" />
+
+</head>
+
+<body class="font-serif">
+    <!-- navigation bar -->
+    <nav class="bg-white border-gray-200 px-2 sm:px-4 py-2.5 rounded dark:bg-gray-800 h-50">
+      <div class="container flex flex-wrap justify-between items-center mx-auto h-full">
+        <a href="front_page" class="flex">
+          <svg xmlns="http://www.w3.org/2000/svg" class="mr-3 h-10" viewBox="0 0 20 20" fill="none">
+              <path fill-rule="evenodd" d="M4 5a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V7a2 2 0 00-2-2h-1.586a1 1 0 01-.707-.293l-1.121-1.121A2 2 0 0011.172 3H8.828a2 2 0 00-1.414.586L6.293 4.707A1 1 0 015.586 5H4zm6 9a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" fill="#bd672a"/>
+          </svg>
+            <span class="self-center text-lg font-bold whitespace-nowrap dark:text-white">OneShot Car</span>
+        </a>
+        <button data-collapse-toggle="mobile-menu" type="button" class="inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="mobile-menu-2" aria-expanded="false">
+          <span class="sr-only">Open main menu</span>
+          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
+          <svg class="hidden w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+        </button>
+        <div class="hidden w-full md:block md:w-auto h-50" id="mobile-menu">
+          <ul class="flex flex-col mt-4 md:flex-row md:space-x-10 md:mt-0 md:text-sm md:font-medium h-10">
+            <li>
+              <a href="front_page" class="block py-2 pr-4 pl-3 text-white bg-[#bd672a] rounded md:bg-transparent md:text-[#bd672a] md:p-0 dark:text-white font-bold" aria-current="page">Home</a>
+            </li>
+            <li>
+              <a href="search" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-[#bd672a] md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 font-bold">Search</a>
+            </li>
+            <li>
+              <a href="about" class="text-center block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-[#bd672a] md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 font-bold">About Us</a>
+            </li>
+            <li>
+              <a href="history" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-[#bd672a] md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 font-bold">History</a>
+            </li>
+            <li>
+              <a href="contact" class="text-center block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-[#bd672a] md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 font-bold">Contact Us</a>
+            </li>
+            <li>
+              <a href="resources" class="block py-2 pr-4 pl-3 text-gray-700 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-[#bd672a] md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent font-bold">Resources</a>
+            </li>
+            <!-- Toggle B -->
+            <div class="flex items-center justify-center w-full">
+              <label for="toggleB" class="flex items-center cursor-pointer">
+                <!-- toggle -->
+                <div class="relative">
+                  <!-- input -->
+                  <input type="checkbox" id="toggleB" onclick="toggleTheme()" class="sr-only">
+                  <!-- line -->
+                  <div class="block bg-[#bd672a] w-14 h-8 rounded-full"></div>
+                  <!-- dot -->
+                  <div class="dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition"></div>
+                </div>
+                <!-- label -->
+                <div class="ml-3 text-gray-700 font-bold text-sm">
+                  Dyslexia
+                </div>
+              </label>
+            </div>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- team logo -->
+    <div class="flex flex-wrap justify-center">
+      <div class="w-6/12 sm:w-4/12 px-4">
+        <img src="/static/photos/logo.PNG" alt="OneShot Car Logo" class="shadow-lg rounded-full max-w-full h-auto align-middle border-none hue-rotate-[140deg] saturate-[.75]" />
+      </div>
+    </div>
+
+
+    <!-- page contents -->
+    <header class="text-[#bd672a] text-5xl text-center my-6 font-extrabold" style="text-shadow: 1px 1px 2px black">We found the car you were searching for!</header>
+
+    <!--car pictures-->
+    <div class="grid grid-cols-2 gap-4 mx-9">
+              {%for i in range(0,carpictures|length)%}
+                     <div>  <img src={{carpictures[i]}} alt="Car Pictures">  </div>
+              {%endfor%}
+    </div>
+
+    <!-- basic features -->
+    <div class="my-6">
+        <h1 class=" text-[#bd672a] font-extrabold text-left text-3xl leading-loose gap-y-6">Basic Info</h1>
+
+        <div class="grid grid-cols-2 gap-3 mx-20">
+
+          <!-- main features -->
+          <div>
+              <h2 class="font-bold text-3xl">Main Features</h2>
+              <!-- make -->
+              <div style="width: 50%; float: left;" class="text-2xl font-bold">
+                Make:
+              </div>
+              <div style="margin-left: 50%;" class="text-2xl">
+                {{make_name}}
+              </div>
+              <!-- model -->
+              <div style="width: 50%; float: left;" class="text-2xl font-bold">
+                Model:
+              </div>
+              <div style="margin-left: 50%;" class="text-2xl">
+                {{model_name}}
+              </div>
+              <!-- years -->
+              <div style="width: 50%; float: left;" class="text-2xl font-bold">
+                Years:
+              </div>
+              <div style="margin-left: 50%;" class="text-2xl">
+                {{years}}
+              </div>
+          </div>
+          <!-- price -->
+          <div>
+              <h2 class="font-bold text-3xl">2022 Car Price</h2>
+              <p class="text-2xl">{{price}}</p>
+          </div>
+        </div>
+    </div>
+
+    <!-- more features -->
+    <div class="mt-6">
+        <h1 class=" text-[#bd672a] font-extrabold text-left text-3xl leading-loose gap-y-6">More Features Below...</h1>
+
+        <div class="grid grid-cols-2 gap-3 mx-20">
+          <!-- trims -->
+          <div>
+              <h2 class="font-bold text-3xl">Trims</h2>
+              <ul>
+                  {%for i in range(0,trims|length)%}
+                      <li class="text-2xl"> {{trims[i]}} </li>
+                  {%endfor%}
+              </ul>
+          </div>
+
+          <!-- transmissions -->
+          <div>
+              <h2 class="font-bold text-3xl">Transmissions</h2>
+                <ul>
+                  {%for i in range(0,transmissions|length)%}
+                      <li class="text-2xl"> {{transmissions[i]}} </li>
+                  {%endfor%}
+              </ul>
+<!--                <p class="text-2xl">{{transmissions}}</p>-->
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 mx-20 my-10">
+          <!-- other models-->
+          <div>
+              <h2 class="font-bold text-3xl">Other Models</h2>
+              <ul>
+                  {%for i in range(0,other_models|length)%}
+                      <li class="text-2xl"> {{other_models[i]}} </li>
+                  {%endfor%}
+              </ul>
+<!--                <p class="text-2xl">{{other_models[0]}}</p>-->
+          </div>
+          <!-- replace -->
+<!--            general specs-->
+          <div>
+              <h2 class="font-bold text-3xl">General Specs</h2>
+              <ul>
+                  {%for i in range(0,generalspecs|length)%}
+                      <li class="text-2xl"> {{generalspecs[i]}} </li>
+                  {%endfor%}
+              </ul>
+          </div>
+
+<!--            engine specs-->
+            <div>
+              <h2 class="font-bold text-3xl">Engine Specs</h2>
+              <ul>
+                  {%for i in range(0,enginespecs|length)%}
+                      <li class="text-2xl"> {{enginespecs[i]}} </li>
+                  {%endfor%}
+              </ul>
+          </div>
+
+<!--            tire list-->
+            <div>
+              <h2 class="font-bold text-3xl">Tire Specs</h2>
+              <ul>
+                  {%for i in range(0,tirelist|length)%}
+                      <li class="text-2xl"> {{tirelist[i]}} </li>
+                  {%endfor%}
+              </ul>
+          </div>
+
+<!--            features list-->
+              <div>
+              <h2 class="font-bold text-3xl">Other Features</h2>
+              <ul>
+                  {%for i in range(0,featurelist|length)%}
+                      <li class="text-2xl"> {{featurelist[i]}} </li>
+                  {%endfor%}
+              </ul>
+          </div>
+
+        </div>
+    </div>
+<!------------------------------------------------------------------------------------------->
+<body class="font-serif">
+<!-- Modal toggle -->
+<button class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" type="button" data-modal-toggle="defaultModal">
+  See Locations
+</button>
+
+<div id="defaultModal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full">
+    <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <!-- Modal header -->
+            <div class="flex justify-between items-start p-4 rounded-t border-b dark:border-gray-600">
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                    Locations Near You!
+                </h3>
+<!--                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="defaultModal">-->
+<!--                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>-->
+<!--                </button>-->
+            </div>
+            <!-- Modal body -->
+<!--                        <div class="grid grid-cols-1 divide-y p-6 space-y-6">-->
+<!--1-9-->
+            {%for i in range(0, my_google_results|length, 4)%}
+<!--            <div class="p-6 space-y-6">-->
+            <div class="grid grid-cols-1 divide-y p-6 space-y-6">
+
+                  <p class="text-base leading-relaxed text-black-500 dark:text-black-400">Name: {{my_google_results[i]}}</p>
+                  <p class="text-base leading-relaxed text-black-500 dark:text-black-400"> Location/Hours: {{my_google_results[i+1]}}  </p>
+                  <p class="text-base leading-relaxed text-black-500 dark:text-black-400">  Website: <a href={{my_google_results[i+2]}} class="font-bold">{{my_google_results[i+2][0:35]}}</a>  </p>
+                  <p class="text-base leading-relaxed text-black-500 dark:text-black-400">  Directions:  <a href={{my_google_results[i+3]}} class="font-bold">{{my_google_results[i+3][0:35]}}</a> </p>
+
+
+                </p>
+                        </div>
+
+            {%endfor%}
+                            </div>
+
+
+
+            <!-- Modal footer -->
+            <div class="flex items-center p-6 space-x-2 rounded-b border-t border-gray-200 dark:border-gray-600">
+                <button onclick="history.back()" data-modal-toggle="defaultModal" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Go back</button>
+                <button onclick="window.location.href='{{url_for('front_page')}}';" data-modal-toggle="defaultModal" type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Home Page</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript" src="/static/fonts/script.js"></script>
+<script src="https://unpkg.com/flowbite@1.4.4/dist/flowbite.js"></script>
+
+</body>
+</html>
