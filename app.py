@@ -194,7 +194,7 @@ def create_app(test_config=None):
                 igoogle_results = carinfo.get_google_location_websites(user_input_make, user_input_model, carinfo.city, carinfo.state)
                 print(igoogle_results)
                 if igoogle_results == "Location not found!":
-                    igoogle_results.clear()
+                    igoogle_results=[]
                     igoogle_results.append("Data Unavailable")
                     igoogle_results.append("Data Unavailable")
                     igoogle_results.append("No Website Available")
